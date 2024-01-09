@@ -1,0 +1,13 @@
+.table-btn {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.table-btn {
+  display: block;
+}
+
+.table-btn img {
+  width: 24px;
+}

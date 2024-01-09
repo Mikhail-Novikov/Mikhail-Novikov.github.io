@@ -1,0 +1,20 @@
+{
+  "budget-list": "Общий бюджет",
+  "profit-list": "Доходы",
+  "cost-list": "Расходы",
+  "table_column_name": "Название",
+  "table_column_category": "Категория",
+  "table_column_description": "Описание",
+  "table_column_amount": "Сумма",
+  "table_link_details": "Подробно",
+  "table_title_link_details": "Детали операции",
+  "currency": "{{ruValue, currency}}",
+  "save": "Сохранить",
+  "cancel": "Отмена",
+  "edit": "Изменить",
+  "delete": "Удалить",
+  "add_operation": "Добавление операции",
+  "edit_operation": "Редактирование операции",
+  "history_operation": "История операций",
+  "total_budget": "Общий бюджет"
+}

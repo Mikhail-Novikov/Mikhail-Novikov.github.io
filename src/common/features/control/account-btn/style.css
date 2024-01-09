@@ -1,0 +1,11 @@
+.account-btn {
+  display: flex;
+  width: 40px;
+  min-height: 100%;
+  background-color: #f8efed;
+}
+
+.account-btn img {
+  display: block;
+  padding: 10px;
+}

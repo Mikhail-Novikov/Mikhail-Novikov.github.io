@@ -1,0 +1,95 @@
+.table {
+  width: 100%;
+  margin-bottom: 1em;
+  color: #212529;
+  vertical-align: top;
+  border-color: #dee2e6;
+  caption-side: bottom;
+  border-collapse: collapse;
+}
+
+body,
+td,
+tfoot,
+th,
+thead,
+tr {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+  vertical-align: inherit;
+  text-align: left;
+}
+
+.table>:not(caption)>*>* {
+  padding: .8em;
+  border-bottom-width: 1px;
+}
+
+.table th {
+  font-size: 1.1em;
+}
+
+.table tr {
+  cursor: pointer;
+}
+
+.table-title {
+  color: #6c757d;
+  font-size: 1.6em;
+  line-height: 1.2;
+  font-family: inherit;
+  text-align: left;
+}
+
+main.dark .table-title {
+  color: #fff;
+}
+
+main.light .table-title {
+  color: #6c757d;
+}
+
+main.dark table {
+  color: #fff;
+}
+
+.title-border {
+  border-bottom: 1px solid;
+  padding-bottom: 1.2em;
+}
+
+main.dark .title-border {
+  border-color: 1px solid #fff;
+}
+
+main.light .table-title {
+  border-color: 1px solid #000;
+}
+
+a {
+  cursor: pointer;
+}
+
+main.light table a {
+  color: blue;
+}
+
+main.dark table a {
+  color: #6c757d;
+}
+
+.glyph-expenses,
+.glyph-income {
+  display: block;
+  height: 24px;
+  width: 4px;
+}
+
+.glyph-expenses {
+  background-color: #E91E63;
+}
+
+.glyph-income {
+  background-color: #007bff;
+}

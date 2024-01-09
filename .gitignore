@@ -1,0 +1,13 @@
+node_modules
+
+coverage
+
+.cache
+
+.idea
+
+.DS_Store
+
+.npmrc
+
+/test-report.xml
