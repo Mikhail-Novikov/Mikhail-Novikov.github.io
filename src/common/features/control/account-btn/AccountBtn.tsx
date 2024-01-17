@@ -8,28 +8,34 @@ import userPathImage from '@src/images/user.svg';
 import { config } from '@common/config';
 
 interface AccountBtnProps {
-  isAuthorized: boolean;
+  isAuthorization: boolean;
 }
 
 /**
  * Компонент кнопки входа в профиль
- * @param isAuthorized - авторизован
+ * @param isAuthorization - авторизован
  * @returns - компонет кнопки авторизации
  */
 export const AccountBtn = ({
-  isAuthorized,
+  isAuthorization,
 }: AccountBtnProps): React.ReactElement => {
   const history = useHistory();
 
-  const goToAuthorized = () => history.push(config.routes.authorized.url);
+  const goToAuthorization = () =>
+    !isAuthorization
+      ? history.push(config.routes.authorization.url)
+      : history.push(config.routes.userProfile.url);
 
   return (
     <a
       className="account-btn"
-      title="Авторизация и регистрация"
-      onClick={goToAuthorized}
+      title="Профиль и регистрация"
+      onClick={goToAuthorization}
     >
-      <img src={isAuthorized ? userPathImage : enterPathImage} alt="Профиль" />
+      <img
+        src={isAuthorization ? userPathImage : enterPathImage}
+        alt="Профиль"
+      />
     </a>
   );
 };

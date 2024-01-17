@@ -13,20 +13,22 @@ import { Menu } from '../menu';
 
 interface HeaderProps {
   /** Режим авторизации */
-  isAuthorized?: boolean;
+  isAuthorization?: boolean;
 }
 
 /**
  * Компонент Header
  */
-export const Header = ({ isAuthorized }: HeaderProps): React.ReactElement => {
+export const Header = ({
+  isAuthorization,
+}: HeaderProps): React.ReactElement => {
   const { themesName } = useContext(ContextTheme);
 
   return (
     <header className={cn('header header-pos-fixed', themesName)}>
       <Logo />
 
-      <Menu />
+      <Menu isAuth={isAuthorization} />
 
       <div className="flex-row align-items-center margin-left-auto margin-right-16">
         <div className="margin-right-24">
@@ -36,7 +38,7 @@ export const Header = ({ isAuthorized }: HeaderProps): React.ReactElement => {
         <ThemeSwitcher />
       </div>
 
-      <AccountBtn isAuthorized={isAuthorized} />
+      <AccountBtn isAuthorization={isAuthorization} />
     </header>
   );
 };

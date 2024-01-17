@@ -21,10 +21,13 @@
       "@styles/*": ["src/common/styles/*"],
       "@pages/*": ["src/pages/*"],
       "@pages": ["src/pages/index.ts"],
+      "@store/*": ["src/store/*"],
+      "@store": ["src/store/index.ts"],
       "@context/*": ["src/context/*"],
       "@context": ["src/context/index.ts"],
       "@src/*": ["src/*"],
-      "@packageSrc": ["package.json"]
+      "@packageSrc": ["package.json"],
+      "@processes/*": ["src/processes/*"]
     }
   },
   "exclude": ["docs/", "node_modules", "src/images"],
