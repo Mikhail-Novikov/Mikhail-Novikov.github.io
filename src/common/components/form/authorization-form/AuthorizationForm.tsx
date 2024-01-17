@@ -11,10 +11,17 @@ import {
 } from '../ValidationShema';
 import { ErrorMessages } from '../error-message';
 
+interface Props {
+  /** Обработчик формы */
+  submitOnSuccess: () => void;
+}
+
 /**
  * Компонент формы регистрации
  */
-export const RegistrationForm = (): React.ReactElement => {
+export const AuthorizationForm = ({
+  submitOnSuccess,
+}: Props): React.ReactElement => {
   const [documentItem, setDocument] = useState('passport');
   const [infoMethod, setInfoMethod] = useState<string>('phone');
 
@@ -31,6 +38,7 @@ export const RegistrationForm = (): React.ReactElement => {
       }}
       validationSchema={SignupSchema}
       onSubmit={(values, actions) => {
+        submitOnSuccess();
         actions.resetForm();
       }}
     >

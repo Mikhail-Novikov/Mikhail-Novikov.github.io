@@ -1,1 +1,2 @@
-export * from './AuthorizedPage';
+export * from './AuthorizationPage';
+export * from './UserProfilePage';

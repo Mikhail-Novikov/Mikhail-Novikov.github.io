@@ -7,7 +7,7 @@ import pathImage from './logo.svg';
  * Компонент Logo
  */
 export const Logo = (): React.ReactElement => (
-  <a href="#" className="logo">
+  <a href="#" className="logo not-event">
     <img className="logo-img" src={pathImage} alt="Учёт расходов" />
   </a>
 );

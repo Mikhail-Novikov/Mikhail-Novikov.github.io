@@ -2,8 +2,10 @@ const createConfig = () => ({
   maxFileSize: 11000,
   environment: process.env.NODE_ENV,
   routes: {
-    /** Authorized */
-    authorized: { url: '/authorized', name: '' },
+    /** Authorization */
+    authorization: { url: '/authorization', name: '' },
+    /** Профиль пользователя */
+    userProfile: { url: '/profile', name: '' },
     /** Список бюджетных позиций */
     budgetList: { url: '/', name: 'budget-list' },
     /** Список доходов */

@@ -5,12 +5,11 @@ import './layout.css';
 import { createPortal } from 'react-dom';
 
 import { Header, Modal } from '@common/components';
+import { useAuthorization } from '@common/hooks';
 
 interface LayoutProps {
   /** Контент */
   children: React.ReactElement | React.ReactFragment;
-  /** Режим авторизации */
-  isAuthorized?: boolean;
 }
 
 export enum Themes {
@@ -21,12 +20,10 @@ export enum Themes {
 /**
  * Компонент Layout
  */
-export const Layout = ({
-  children,
-  isAuthorized,
-}: LayoutProps): React.ReactElement => {
+export const Layout = ({ children }: LayoutProps): React.ReactElement => {
   const [themesName, setThemeState] = React.useState<Themes>();
   const { state, dispatch } = useContextReducer();
+  const { isAuthorization } = useAuthorization();
 
   const closeModal = () => {
     dispatch({
@@ -38,7 +35,7 @@ export const Layout = ({
 
   return (
     <ContextTheme.Provider value={{ setThemeState, themesName }}>
-      <Header isAuthorized={isAuthorized} />
+      <Header isAuthorization={isAuthorization} />
       <main className="container">
         {children}
 
