@@ -1,5 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import { put, select } from 'redux-saga/effects';
+import { CallEffect, call, put, select } from 'redux-saga/effects';
 
 // eslint-disable-next-line import/no-cycle
 import {
@@ -10,10 +10,10 @@ import {
 import { TokenState } from './types';
 
 /**
- * Сага создание токена
+ * Сага записи токена
  * @returns {string} token код системы в которой авторизуемся
  */
-export function* generatorToken(): SagaIterator<TokenState> {
+export function* saveToken(): SagaIterator<TokenState> {
   yield put(tokenActions.generationToken());
 
   const token = yield select(selectorsToken.useTokenSelector);
@@ -21,6 +21,22 @@ export function* generatorToken(): SagaIterator<TokenState> {
   return token;
 }
 
+/**
+ * Сага читатет токен из хранилища
+ * @returns token код системы в которой авторизуемся либо 'not-auth'
+ */
+export function* getTokenValueFromStorage(): Generator<
+  CallEffect<string>,
+  string,
+  never
+> {
+  const getTokenApp = (): string => localStorage.getItem('token-app');
+  const tokenApp = yield call(getTokenApp);
+
+  return tokenApp ?? 'not-auth';
+}
+
 export const sagas = {
-  generatorToken,
+  getTokenValueFromStorage,
+  saveToken,
 };

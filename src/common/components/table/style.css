@@ -36,7 +36,6 @@ tr {
 
 .table-title {
   color: #6c757d;
-  font-size: 1.6em;
   line-height: 1.2;
   font-family: inherit;
   text-align: left;
@@ -79,14 +78,14 @@ main.dark table a {
   color: #6c757d;
 }
 
-.glyph-expenses,
+.glyph-Cost,
 .glyph-income {
   display: block;
   height: 24px;
   width: 4px;
 }
 
-.glyph-expenses {
+.glyph-Cost {
   background-color: #E91E63;
 }
 

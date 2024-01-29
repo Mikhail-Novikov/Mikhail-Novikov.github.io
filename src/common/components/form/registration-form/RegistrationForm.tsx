@@ -3,6 +3,7 @@ import { Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import '../form.css';
 
+import { TFormValues } from './types';
 import {
   SignupSchema,
   validateEmail,
@@ -13,17 +14,17 @@ import { ErrorMessages } from '../error-message';
 
 interface Props {
   /** Обработчик формы */
-  submitOnSuccess: () => void;
+  submitOnSuccess: (values: TFormValues) => void;
 }
 
 /**
  * Компонент формы регистрации
  */
-export const AuthorizationForm = ({
+export const RegistrationForm = ({
   submitOnSuccess,
 }: Props): React.ReactElement => {
   const [documentItem, setDocument] = useState('passport');
-  const [infoMethod, setInfoMethod] = useState<string>('phone');
+  const [infoMethod, setInfoMethod] = useState<string>('mail');
 
   return (
     <Formik
@@ -36,16 +37,16 @@ export const AuthorizationForm = ({
         numPhone: '',
         email: '',
       }}
-      validationSchema={SignupSchema}
+      // validationSchema={SignupSchema}
       onSubmit={(values, actions) => {
-        submitOnSuccess();
+        submitOnSuccess(values);
         actions.resetForm();
       }}
     >
       <Form className="form">
         <ul className="flex-row wrap gap-16 form-group">
           <li>
-            <label htmlFor="name">*Имя</label>
+            <label htmlFor="name">Имя</label>
             <Field id="name" name="name" type="text" />
             <ErrorMessages field="name" />
           </li>
@@ -55,14 +56,14 @@ export const AuthorizationForm = ({
               id="password"
               name="password"
               type="password"
-              validate={validatePassword}
+            // validate={validatePassword}
             />
             <ErrorMessages field="password" />
           </li>
         </ul>
         <ul className="flex-row wrap gap-16 form-group">
           <li>
-            <label htmlFor="documentType">*Документ</label>
+            <label htmlFor="documentType">Документ</label>
             <Field
               component="select"
               id="documentType"
@@ -103,7 +104,7 @@ export const AuthorizationForm = ({
                 type="text"
                 name="numPhone"
                 placeholder="+7 111 111-11-11"
-                validate={validatePhone}
+              // validate={validatePhone}
               />
               <ErrorMessages field="numPhone" />
             </>
@@ -114,26 +115,12 @@ export const AuthorizationForm = ({
                 type="text"
                 name="email"
                 placeholder="mail@mail.ru"
-                validate={validateEmail}
+              // validate={validateEmail}
               />
               <ErrorMessages field="email" />
             </>
           )}
           <div className="flex-row align-items-center gap-16 mt-16">
-            <div className="flex-row align-items-center">
-              <Field
-                id="infoMethodPhone"
-                type="radio"
-                name="contact"
-                value="phone"
-                onChange={() => setInfoMethod('phone')}
-                checked={infoMethod === 'phone'}
-              />
-              <label className="mb-0" htmlFor="infoMethodPhone">
-                Телефон
-              </label>
-            </div>
-
             <div className="flex-row align-items-center">
               <Field
                 id="infoMethodPhoneMail"
@@ -145,6 +132,20 @@ export const AuthorizationForm = ({
               />
               <label className="mb-0" htmlFor="infoMethodPhoneMail">
                 Интернет почта
+              </label>
+            </div>
+
+            <div className="flex-row align-items-center">
+              <Field
+                id="infoMethodPhone"
+                type="radio"
+                name="contact"
+                value="phone"
+                onChange={() => setInfoMethod('phone')}
+                checked={infoMethod === 'phone'}
+              />
+              <label className="mb-0" htmlFor="infoMethodPhone">
+                Телефон
               </label>
             </div>
           </div>

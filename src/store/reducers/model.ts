@@ -4,6 +4,7 @@ export type StateType = {
   titleModal: string;
   action?: Action;
   isOpen?: boolean;
+  isEdit?: boolean;
   form?: ReactElement<string>;
 };
 
@@ -16,6 +17,7 @@ export type Action = {
 export type ReducerType = {
   action?: Action;
   isOpen?: boolean;
+  isEdit?: boolean;
   form?: ReactElement<string>;
   titleModal?: string;
 };

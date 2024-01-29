@@ -1,4 +1,4 @@
-import { TTableList } from '@features/budget-item/types';
+import { TTableList } from '@common/types';
 
 /**
  * Утилита считает сумму из TTableList { name: price }
@@ -7,7 +7,7 @@ import { TTableList } from '@features/budget-item/types';
  */
 export const calcSumm = (arr: TTableList[]): number =>
   arr?.reduce(
-    (accumulator: number, currentValue: { name: string[] }) =>
-      accumulator + Number(currentValue.name[3]),
+    (accumulator: number, currentValue: { name: any }) =>
+      accumulator + currentValue.name[3],
     0,
   );

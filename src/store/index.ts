@@ -1,7 +1,9 @@
 import { configureStore as confStore, EnhancedStore } from '@reduxjs/toolkit';
+import { routerMiddleware } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 
-import rootReducer from './root-reducer';
+import rootReducer, { history } from '@store/root-reducer';
+
 import { rootSaga } from './root-saga';
 
 const configureStore = (): EnhancedStore => {
@@ -9,8 +11,7 @@ const configureStore = (): EnhancedStore => {
 
   const store = confStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(sagaMiddleware),
+    middleware: [sagaMiddleware, routerMiddleware(history)],
     devTools: process.env.NODE_ENV !== 'production',
   });
 

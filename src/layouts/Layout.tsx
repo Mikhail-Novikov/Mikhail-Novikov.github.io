@@ -25,6 +25,12 @@ export const Layout = ({ children }: LayoutProps): React.ReactElement => {
   const { state, dispatch } = useContextReducer();
   const { isAuthorization } = useAuthorization();
 
+  // const { submitForm } = useFormikContext();
+
+  // const submitModal = () => {
+  //   submitForm();
+  // };
+
   const closeModal = () => {
     dispatch({
       type: 'closeModalAddOpertation',
@@ -36,7 +42,7 @@ export const Layout = ({ children }: LayoutProps): React.ReactElement => {
   return (
     <ContextTheme.Provider value={{ setThemeState, themesName }}>
       <Header isAuthorization={isAuthorization} />
-      <main className="container">
+      <main className="container mb-32">
         {children}
 
         {createPortal(
@@ -44,7 +50,7 @@ export const Layout = ({ children }: LayoutProps): React.ReactElement => {
             content={state.form}
             titleModal={state.titleModal}
             isOpenModal={state.isOpen}
-            handleClickButton={closeModal}
+            handleClickCancel={closeModal}
           />,
           document.body,
         )}

@@ -36,6 +36,7 @@ export const Button: FC<ButtonProps> = ({
       // eslint-disable-next-line react/button-has-type
       type={type}
       className={cn('button', `button--${size}`, mode, border)}
+      form="operation"
       {...props}
     >
       {label}

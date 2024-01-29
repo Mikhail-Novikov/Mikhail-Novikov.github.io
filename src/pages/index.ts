@@ -1,2 +1,3 @@
 export { BudgetsPage } from './budgets';
-export { AuthorizationPage, UserProfilePage } from './authorized';
+export { UserProfilePage } from './authorized';
+export { RegistrationPage } from './registration';

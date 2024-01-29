@@ -6,3 +6,22 @@ export type TApiToProduct = {
   price: number;
   category: string;
 };
+
+type Category = {
+  id: string;
+  name: string;
+  photo?: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type BudgetState = {
+  id: string;
+  name?: string;
+  desc?: string;
+  amount?: number;
+  createdAt?: Date;
+  type?: 'Profit' | 'Cost';
+  updatedAt: Date;
+  category?: Category;
+};

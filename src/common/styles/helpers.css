@@ -64,7 +64,7 @@ main.dark table a {
 
 [class*='list'] dt {
   float: left;
-  font-size: 1.6em;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -231,6 +231,10 @@ ul li {
 
 .txt-right {
   text-align: right;
+}
+.txt-subtitle {
+  font-size: .8em;
+  color: #6c757d;
 }
 .not-event {
   pointer-events: none;

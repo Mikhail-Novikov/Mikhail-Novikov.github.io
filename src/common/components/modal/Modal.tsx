@@ -13,7 +13,9 @@ interface ModalProps {
   /** Признак открытия модального окна */
   isOpenModal: boolean;
   /** Обработчик кнопки закрытия окна  */
-  handleClickButton: () => void;
+  handleClickCancel: () => void;
+  /** Обработчик кнопки подтверждения  */
+  handleClickSubmit?: () => void;
 }
 
 /**
@@ -23,7 +25,8 @@ export const Modal = ({
   content,
   titleModal,
   isOpenModal,
-  handleClickButton,
+  handleClickCancel,
+  handleClickSubmit,
 }: ModalProps): React.ReactElement => {
   // eslint-disable-next-line id-length
   const { t } = useTranslation();
@@ -42,7 +45,7 @@ export const Modal = ({
             <li className="left">
               <Button
                 label={t('cancel')}
-                onClick={handleClickButton}
+                onClick={handleClickCancel}
                 type="button"
               />
             </li>
@@ -50,7 +53,7 @@ export const Modal = ({
               <Button
                 label={t('save')}
                 primary
-                onClick={handleClickButton}
+                onClick={handleClickSubmit}
                 type="submit"
               />
             </li>

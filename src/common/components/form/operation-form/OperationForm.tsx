@@ -3,12 +3,18 @@ import '../form.css';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { TFieldsAddOPeration } from '@common/types';
+
 import { validateNumber, validateText } from '../ValidationShema';
 import { ErrorMessages } from '../error-message';
 
 interface OperationFormProps {
   /** режим редактирования */
-  isEdit: boolean;
+  isEdit?: boolean;
+  /** Данные для полей операции при редактировании */
+  formValues?: any;
+  /** Обработчик формы */
+  submitOnSuccess: (values: TFieldsAddOPeration) => void;
 }
 
 /**
@@ -18,100 +24,95 @@ interface OperationFormProps {
  */
 export const OperationForm = ({
   isEdit,
+  submitOnSuccess,
+  formValues,
 }: OperationFormProps): React.ReactElement => {
-  const [typeOperation, setTypeOperation] = useState<string>('profit');
-
+  const dateInputValue = new Date().toISOString();
+  console.log('🚀 ~ formValues:', formValues);
   const incomingFormValues = {
-    typeOperation: 'cost',
-    title: 'сумка',
-    category: 'подарок',
-    description: 'сестре на др',
-    amount: 1500,
+    ...formValues,
+    date: dateInputValue,
   };
 
   const initialValuesOfForm = {
-    typeOperation: '',
-    title: '',
-    category: '',
-    description: '',
+    name: 'add',
+    desc: '',
     amount: 0,
+    date: dateInputValue,
+    type: '',
+    categoryId: '',
   };
+
+  const isInitialValue = isEdit ? incomingFormValues : initialValuesOfForm;
 
   // eslint-disable-next-line id-length
   const { t } = useTranslation();
 
   return (
     <Formik
-      initialValues={isEdit ? incomingFormValues : initialValuesOfForm}
+      initialValues={isInitialValue}
       onSubmit={(values, actions) => {
+        submitOnSuccess(values);
         actions.resetForm();
       }}
     >
-      <Form className="form">
-        {!isEdit && (
-          <div className="flex-row align-items-center gap-16 mb-12">
-            <div className="flex-row align-items-center">
+      <Form className="form" id="operation">
+        <div
+          className="flex-row align-items-center gap-16 mb-12"
+          role="group"
+          aria-labelledby="my-radio-group"
+        >
+          <div className="flex-row align-items-center">
+            <label className="mb-0" htmlFor="Profit">
+              {' '}
               <Field
-                id="typeOperationProfit"
+                id="Profit"
                 type="radio"
-                name="typeOperation"
-                value="profit"
-                onChange={() => setTypeOperation('profit')}
-                checked={typeOperation === 'profit'}
-                dispatch
+                name="type"
+                value="Profit"
+                form="operation"
+                checked
               />
-              <label className="mb-0" htmlFor="typeOperationProfit">
-                {t('profit-list')}
-              </label>
-            </div>
-
-            <div className="flex-row align-items-center">
-              <Field
-                id="typeOperationCost"
-                type="radio"
-                name="typeOperation"
-                value="cost"
-                onChange={() => setTypeOperation('cost')}
-                checked={typeOperation === 'cost'}
-              />
-              <label className="mb-0" htmlFor="typeOperationCost">
-                {t('cost-list')}
-              </label>
-            </div>
+              {t('profit-list')}
+            </label>
           </div>
-        )}
+
+          <div className="flex-row align-items-center">
+            <label className="mb-0" htmlFor="Cost">
+              {' '}
+              <Field
+                id="Cost"
+                type="radio"
+                name="type"
+                value="Cost"
+                form="operation"
+              />
+              {t('cost-list')}
+            </label>
+          </div>
+        </div>
 
         <div className="mb-32">
           <label htmlFor="title">*{t('table_column_name')}</label>
-          <Field id="title" name="title" type="text" validate={validateText} />
-          <ErrorMessages field="title" />
+          <Field id="title" name="name" type="text" />
+          <ErrorMessages field="name" />
         </div>
 
         <div className="mb-8">
-          <label htmlFor="category">*{t('table_column_category')}</label>
-          <Field
-            id="category"
-            name="category"
-            type="text"
-            validate={validateText}
-          />
-          <ErrorMessages field="category" />
+          <label htmlFor="categoryId">*{t('table_column_category')}</label>
+          <Field id="categoryId" name="categoryId" type="text" />
+          <ErrorMessages field="categoryId" />
         </div>
 
         <div className="mb-8">
           <label htmlFor="amount">*{t('table_column_amount')}</label>
-          <Field
-            id="amount"
-            name="amount"
-            type="number"
-            validate={validateNumber}
-          />
+          <Field id="amount" name="amount" type="number" />
           <ErrorMessages field="amount" />
         </div>
 
         <div className="mb-8">
-          <label htmlFor="description">{t('table_column_description')}</label>
-          <Field id="description" name="description" as="textarea" />
+          <label htmlFor="desc">{t('table_column_description')}</label>
+          <Field id="desc" name="desc" as="textarea" />
         </div>
       </Form>
     </Formik>

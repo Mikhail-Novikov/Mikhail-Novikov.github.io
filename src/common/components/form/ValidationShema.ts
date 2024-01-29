@@ -4,6 +4,16 @@ import * as Yup from 'yup';
 export const SignupSchema = Yup.object().shape({
   name: Yup.string().required('Имя обязательно к заполнению'),
   documentItem: Yup.string().min(10).required('Введите номер документ'),
+
+  password: Yup.string()
+    .required('Password is required')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!+@#\$%\^&\*])(?=.{8,})/,
+      'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character',
+    ),
+  confirmPassword: Yup.string()
+    .required('Confirm password is required')
+    .oneOf([Yup.ref('password')], 'Passwords do not match'),
 });
 
 export const validateEmail = (value: string): string => {

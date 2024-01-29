@@ -3,38 +3,38 @@ import { v4 as uuid } from 'uuid';
 
 import './style.css';
 import { TableBtn } from '@common/features/control';
+import { TTableRows } from '@common/types';
 
-import { NamesColumns } from './types';
+interface BudgetTableRowProps {
+  itemRow: TTableRows[];
+  type: string;
+  handleClickRow: () => void;
+}
 
 /**
  *  Cтрока таблицы
  */
 const BudgetTableRow = ({
   itemRow,
-  tag,
-}: {
-  itemRow: NamesColumns[];
-  tag: string;
-}): React.ReactElement => {
-  const handleClickRow = (): void => null;
-
-  return (
-    <tr className="pointer" onClick={handleClickRow}>
-      <td className="padding-left-none" aria-label="cell">
-        <div
-          className={`${tag === 'Cost' ? 'glyph-expenses' : 'glyph-income'}`}
-        />
+  type,
+  handleClickRow,
+}: BudgetTableRowProps): React.ReactElement => (
+  <tr className="pointer">
+    <td className="padding-left-none" aria-label="cell">
+      <div className={`${type === 'Cost' ? 'glyph-Cost' : 'glyph-income'}`} />
+    </td>
+    {itemRow?.map((item) => (
+      <td key={uuid()} onClick={handleClickRow}>
+        <div className="margin-right-24 txt-line-clamp-2">{item}</div>
       </td>
-      {itemRow?.map((item) => (
-        <td key={uuid()}>
-          <div className="margin-right-24 txt-line-clamp-2">{item}</div>
-        </td>
-      ))}
-      <td aria-label="table-control">
-        <TableBtn />
-      </td>
-    </tr>
-  );
-};
+    ))}
+    <td
+      aria-label="table-control"
+      onMouseDown={(event: any) => event.preventDefault()}
+    >
+      <TableBtn />
+    </td>
+  </tr>
+);
 
 export default BudgetTableRow;

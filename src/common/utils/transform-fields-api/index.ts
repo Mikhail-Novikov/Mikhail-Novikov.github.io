@@ -1,25 +1,21 @@
-import { TTableList } from '@common/components/table/types';
-
-export type OperationShemaApi = {
-  id: number;
-  title: string;
-  price: string;
-  category: string;
-  description: string;
-  image: string;
-};
+import { Operation, TTableList, TTableRows } from '@common/types';
 
 /**
  * Преобразование полей api из запроса в объект для приложения
  * @param fieldsApi - Поля из api
  * @returns - преобразованный объект
  */
-export const transformFieldsApi = (
-  fieldsApi: OperationShemaApi,
-): TTableList => {
-  const { id, title, price, category, description } = fieldsApi;
+export const transformFieldsApi = (fieldsApi: Operation): TTableList => {
+  const { category } = fieldsApi;
 
-  const tag = ['Cost', 'Profit'][Math.floor(Math.random() * 2)];
-
-  return { id, tag, name: [title, category, description, price] };
+  return {
+    id: fieldsApi.id,
+    type: fieldsApi.type,
+    name: [
+      fieldsApi.name,
+      category?.name,
+      fieldsApi.desc,
+      fieldsApi.amount,
+    ] as unknown as TTableRows[],
+  };
 };

@@ -1,2 +1,2 @@
 export * from './BudgetsPage';
-export * from './BudgetProfitItemPage';
+export * from './BudgeItemPage';

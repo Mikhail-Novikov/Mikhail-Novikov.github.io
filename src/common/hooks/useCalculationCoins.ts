@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { TTableList } from '@common/components/table/types';
+import { TTableList } from '@common/types';
 import { calcSumm } from '@common/utils/calc-summ';
 import { transformFieldsApi } from '@common/utils/transform-fields-api';
 
@@ -24,9 +24,10 @@ export const useCalculationCoins = (): TCalculationCoins => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await api.getPricesOperations();
+        const res = await api.operationsFetch();
 
         const transformRes = res.map((item) => transformFieldsApi(item));
+
         setOperations(transformRes);
 
         setLoading(false);
@@ -39,11 +40,11 @@ export const useCalculationCoins = (): TCalculationCoins => {
   }, []);
 
   const arrCost = operations?.filter(
-    (operation: { tag: string }) => operation.tag === 'Cost',
+    (operation: { type: string }) => operation.type === 'Cost',
   );
 
   const arrProfit = operations?.filter(
-    (operation: { tag: string }) => operation.tag === 'Profit',
+    (operation: { type: string }) => operation.type === 'Profit',
   );
 
   const summCost = loading ? 0 : Math.floor(calcSumm(arrCost));
@@ -52,9 +53,12 @@ export const useCalculationCoins = (): TCalculationCoins => {
 
   const summTotal = loading ? 0 : Math.floor(summProfit - summCost);
 
-  return {
-    summTotal,
-    summProfit,
-    summCost,
-  };
+  return useMemo(
+    () => ({
+      summTotal,
+      summProfit,
+      summCost,
+    }),
+    [summTotal],
+  );
 };

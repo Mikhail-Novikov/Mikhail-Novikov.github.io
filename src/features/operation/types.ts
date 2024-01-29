@@ -8,12 +8,12 @@ export enum NamesColumns {
 
 export enum TBudgetType {
   Profit = 'Доходы',
-  Expenses = 'Расходы',
+  Cost = 'Расходы',
 }
 
 export type TTableList = {
-  id: number;
-  tag: string;
+  id: string;
+  type: string;
   name: string[];
 };
 
@@ -30,7 +30,7 @@ type CommonWrite = {
   id: string;
   name: string;
   desc?: string;
-  createdAt: string;
+  createdAt: Date;
   category: Category;
 };
 
@@ -57,11 +57,11 @@ export type Profit = {
 /** Операция (Operation) может быть либо тратой (Cost), либо доходом (Profit) */
 export type Operation = Cost | Profit;
 
-export type OperationShemaApi = {
-  id: number;
-  title: string;
-  price: string;
-  category: string;
-  description: string;
-  image: string;
+export type OperationState = {
+  id: string;
+  name?: string;
+  desc?: string;
+  amount?: number;
+  createdAt?: Date;
+  type?: 'Profit' | 'Cost';
 };

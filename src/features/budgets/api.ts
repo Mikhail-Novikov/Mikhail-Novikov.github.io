@@ -1,18 +1,6 @@
-import axios from 'axios';
+import { config } from '@common/config';
 
-import { OperationShemaApi } from '@features/budget-item/types';
-
-/**
- * Запрос на получение суммы по всем операциям
- * @param limit - количество операций
- * @returns - сумму
- */
-
-const getPricesOperations = (): Promise<OperationShemaApi[]> =>
-  axios({
-    method: 'GET',
-    baseURL: 'https://fakestoreapi.com/products',
-  }).then((res): OperationShemaApi[] => res.data);
+import { BudgetState } from './types';
 
 /**
  * Запрос на получение списка программ
@@ -20,14 +8,33 @@ const getPricesOperations = (): Promise<OperationShemaApi[]> =>
  * @returns - Список операций
  */
 
-const getOperations = (limit: number): Promise<OperationShemaApi[]> =>
-  axios({
+const getOperations = (limit: number): any =>
+  fetch(
+    `${config.api.getCategories}?${new URLSearchParams({
+      pagination: JSON.stringify({
+        pageSize: limit,
+      }),
+    }).toString()}`,
+  )
+    .then((res) => res.json())
+    .then((res) => res.data);
+
+/**
+ * Запрос на получение операций
+ * @param токен
+ * @returns {Operations} - данные всех операций
+ */
+const operationsFetch = (): Promise<BudgetState[]> =>
+  fetch(`${config.api.getCategories}`, {
     method: 'GET',
-    baseURL: 'https://fakestoreapi.com/products',
-    url: `?limit=${limit}`,
-  }).then((res): OperationShemaApi[] => res.data);
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => res.data);
 
 export const api = {
   getOperations,
-  getPricesOperations,
+  operationsFetch,
 };

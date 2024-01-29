@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@common/components';
 
 interface BottomBtnProps {
-  /** Обработчик клика на кнопку показать ещё */
+  /** Обработчик клика на кнопку Показать ещё */
   handleClickShow?: () => void;
   /** Обработчик клика на кнопку Добавить операцию */
   handleClickAdd?: () => void;
