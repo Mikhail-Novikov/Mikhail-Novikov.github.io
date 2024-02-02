@@ -1,5 +1,6 @@
 {
   "budget-list": "Общий бюджет",
+  "category-list": "Категории",
   "profit-list": "Доходы",
   "cost-list": "Расходы",
   "table_column_name": "Название",
@@ -14,7 +15,9 @@
   "edit": "Изменить",
   "delete": "Удалить",
   "add_operation": "Добавление операции",
+  "add_categories": "Добавление категории",
   "edit_operation": "Редактирование операции",
+  "edit_category": "Редактирование категории",
   "history_operation": "История операций",
   "total_budget": "Общий бюджет"
 }

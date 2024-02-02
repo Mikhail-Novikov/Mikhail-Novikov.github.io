@@ -15,6 +15,8 @@ export const initialState = {
   email: '',
   /** дата регистрации пользователя */
   signUpDate: '',
+  /** признак успешной операции */
+  isSuccess: false,
 } as unknown as ProfileState;
 
 const profileSlice = createSlice({
@@ -29,7 +31,7 @@ const profileSlice = createSlice({
       ...payload,
     }),
     /**
-     * Запись стейта профиля при инициализации
+     * Запись стейта профиля
      * @param payload - ответ сервера
      * @returns token
      */
@@ -39,9 +41,16 @@ const profileSlice = createSlice({
     ): ProfileState => ({
       ...state,
       ...{
-        signUpDate: payload.signUpDate,
-        email: payload.email,
+        signUpDate: payload?.signUpDate,
+        email: payload?.email,
       },
+    }),
+    changePasswordResult: (
+      state: ProfileState,
+      { payload: isSuccess }: PayloadAction<boolean>,
+    ): ProfileState => ({
+      ...state,
+      isSuccess,
     }),
   },
 });

@@ -12,6 +12,7 @@ const urlencoded = new URLSearchParams();
 const auth = ({ email, password }: SignUpBody): Promise<AuthResult> => {
   urlencoded.append('email', `${email}`);
   urlencoded.append('password', `${password}`);
+  urlencoded.append('commandId', '65a9686860c8b274331b4653');
 
   return fetch(config.api.signupUser, {
     method: 'post',

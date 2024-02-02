@@ -27,7 +27,4 @@ export function* tokenProcess(): SagaIterator {
  */
 export function* tokenProcessWatcher(): SagaIterator {
   yield all([takeEvery(tokenProcessAction.token, tokenProcess)]);
-
-  // eslint-disable-next-line no-console
-  console.log('run tokenProcessWatcher');
 }

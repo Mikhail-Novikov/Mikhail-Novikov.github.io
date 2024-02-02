@@ -32,7 +32,7 @@
     flex-direction: column;
     justify-content: space-between;
     max-width: 600px;
-    margin: 64px 12px 12px;
+    margin: 98px 12px 12px;
     min-height: 200px;
     position: relative;
     width: 100%;
@@ -59,6 +59,14 @@
     margin-top: 0;
 }
 
+.modal-content .form input[type="email"],
+.modal-content .form input[type="text"],
+.modal-content .form input[type="password"],
+.modal-content .form input[type="number"],
+.modal-content .form textarea,
+.modal-content .form select {
+    width: 100%;
+}
 .modal-footer {
     padding: 24px 32px;
     text-align: right;

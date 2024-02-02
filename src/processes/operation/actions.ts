@@ -1,6 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { TFormValues } from '@common/components/form/operation-form/types';
 import { useActions } from '@common/hooks';
 import { TFieldsAddOPeration } from '@common/types';
 

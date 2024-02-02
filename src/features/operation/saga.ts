@@ -1,8 +1,8 @@
 import { SagaIterator } from 'redux-saga';
-import { SagaReturnType, call, put, select } from 'redux-saga/effects';
+import { SagaReturnType, call, put } from 'redux-saga/effects';
 
+// eslint-disable-next-line import/no-cycle
 import {
-  selectors as operationSelectors,
   api as apiBudgetItem,
   actions as operationActions,
 } from '@features/operation';
@@ -14,15 +14,8 @@ import {
  * @returns void - запись в стейт
  */
 
-export function* getDataOperationById(ids: string): SagaIterator<any> {
-  console.log('🚀 ~ function*getDataOperationById ~ ids:', ids);
-
-  const id = '651b1a5bba9cfae1c95bd3a6';
+export function* getDataOperationById(id: string): SagaIterator<void> {
   try {
-    /** получение id operation */
-    // const { id }: ReturnType<typeof operationSelectors.operationSelectors> =
-    //   yield select(operationSelectors.operationSelectors);
-
     /** запрос на сервер c id */
     const operationData: SagaReturnType<typeof apiBudgetItem.operationFetch> =
       yield call(apiBudgetItem.operationFetch, id);

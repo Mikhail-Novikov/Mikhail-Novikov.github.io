@@ -2,12 +2,15 @@
 import * as Yup from 'yup';
 
 export const SignupSchema = Yup.object().shape({
-  newPassword: Yup.string()
-    .required('Password is required')
+  password: Yup.string()
+    .required('Введите пароль указанный при регистрации')
     .matches(/(?=.{6,})/, 'Пароль должен быть не менее 6 символов'),
-  confirmPassword: Yup.string()
+  unconfirmedPassword: Yup.string()
+    .required('Введите пароль')
+    .matches(/(?=.{6,})/, 'Пароль должен быть не менее 6 символов'),
+  newPassword: Yup.string()
     .required('Требуется подтверждение нового пароля')
-    .oneOf([Yup.ref('newPassword')], 'Пароли не совпадают'),
+    .oneOf([Yup.ref('unconfirmedPassword')], 'Пароли не совпадают'),
 });
 
 export const validateEmail = (value: string): string => {

@@ -19,7 +19,7 @@ export const BottomBtn = ({
   <ul className="flex-row jce mt-24">
     <li className="mr-16">
       <Button
-        label="Добавить операцию"
+        label="Добавить"
         onClick={handleClickAdd}
         type="button"
         size="large"

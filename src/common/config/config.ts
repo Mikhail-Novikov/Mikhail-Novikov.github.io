@@ -10,6 +10,8 @@ const createConfig = () => ({
     userProfile: { url: '/profile', name: '' },
     /** Список бюджетных позиций */
     budgetList: { url: '/', name: 'budget-list' },
+    /** Список категорий операций */
+    categoryList: { url: '/categories', name: 'category-list' },
     /** Карточка операции */
     budgetItem: { url: '/operation' },
     /** Список расходов */
@@ -19,10 +21,20 @@ const createConfig = () => ({
   },
   api: {
     /**
-     * Получение информации список операций
+     * Получение списка категорий
      * @returns - Url для получения списка версий программы
      */
-    getCategories: `${apiUrl.baseUrl}/operations`,
+    getCategories: `${apiUrl.baseUrl}/categories`,
+    /**
+     * Получение категории по id
+     * @returns - Url для получения списка версий программы
+     */
+    getCategory: `${apiUrl.baseUrl}/categories/`,
+    /**
+     * Получение списка операций
+     * @returns - Url для получения списка версий программы
+     */
+    getOperations: `${apiUrl.baseUrl}/operations`,
     /**
      * Получение информации об операции по id
      * @returns - Url
@@ -43,6 +55,11 @@ const createConfig = () => ({
      * @returns - Url для профиля
      */
     profileUser: `${apiUrl.baseUrl}/profile`,
+    /**
+     * Замена старого пароля
+     * @returns - Url для замены пароля
+     */
+    profileChangePassword: `${apiUrl.baseUrl}/profile/change-password`,
   },
 });
 

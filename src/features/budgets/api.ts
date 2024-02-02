@@ -3,14 +3,14 @@ import { config } from '@common/config';
 import { BudgetState } from './types';
 
 /**
- * Запрос на получение списка программ
+ * Запрос на получение списка операций
  * @param limit - количество операций
  * @returns - Список операций
  */
 
-const getOperations = (limit: number): any =>
+const getOperations = (limit: number): Promise<BudgetState[]> =>
   fetch(
-    `${config.api.getCategories}?${new URLSearchParams({
+    `${config.api.getOperations}?${new URLSearchParams({
       pagination: JSON.stringify({
         pageSize: limit,
       }),
@@ -25,7 +25,7 @@ const getOperations = (limit: number): any =>
  * @returns {Operations} - данные всех операций
  */
 const operationsFetch = (): Promise<BudgetState[]> =>
-  fetch(`${config.api.getCategories}`, {
+  fetch(`${config.api.getOperations}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',

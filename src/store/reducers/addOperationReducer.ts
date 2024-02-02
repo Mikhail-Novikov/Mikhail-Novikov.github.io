@@ -5,7 +5,7 @@ export const addOperationReducer = (
   action: Action,
 ): ReducerType => {
   switch (action.type) {
-    case 'openModalAddOperation': {
+    case 'openModalAdd': {
       return {
         ...state,
         isOpen: true,
@@ -14,7 +14,7 @@ export const addOperationReducer = (
         titleModal: action.titleModal,
       };
     }
-    case 'closeModalAddOpertation': {
+    case 'closeModal': {
       return {
         ...state,
         isOpen: false,

@@ -7,6 +7,8 @@ import { createPortal } from 'react-dom';
 import { Header, Modal } from '@common/components';
 import { useAuthorization } from '@common/hooks';
 
+import { useModal } from '@features/modal';
+
 interface LayoutProps {
   /** Контент */
   children: React.ReactElement | React.ReactFragment;
@@ -24,16 +26,14 @@ export const Layout = ({ children }: LayoutProps): React.ReactElement => {
   const [themesName, setThemeState] = React.useState<Themes>();
   const { state, dispatch } = useContextReducer();
   const { isAuthorization } = useAuthorization();
-
-  // const { submitForm } = useFormikContext();
-
-  // const submitModal = () => {
-  //   submitForm();
-  // };
+  const { showModal } = useModal();
 
   const closeModal = () => {
+    showModal({
+      isOpen: false,
+    });
     dispatch({
-      type: 'closeModalAddOpertation',
+      type: 'closeModal',
       payload: <></>,
       titleModal: '',
     });

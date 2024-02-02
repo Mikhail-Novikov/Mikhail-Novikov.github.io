@@ -12,9 +12,8 @@ import {
 
 import { config } from '@common/config';
 
-// eslint-disable-next-line import/no-cycle
 import { api as apiBudgets } from '@features/budgets';
-// eslint-disable-next-line import/no-cycle
+import { actions as modalActions } from '@features/modal';
 import {
   selectors as operationSelectors,
   api as apiOperation,
@@ -30,7 +29,9 @@ export const history = createHashHistory();
  * Процесс редактирования операции
  * @returns {void}
  */
-export function* editOperation(data: any): SagaIterator {
+export function* editOperation(
+  fieldsEditOPeration: ReturnType<typeof operationProcessActions.editOperation>,
+): SagaIterator {
   // eslint-disable-next-line no-console
   console.log('run edit operation process');
   try {
@@ -47,11 +48,35 @@ export function* editOperation(data: any): SagaIterator {
      * 8. получаем ответ с сервера с новой сущностью, параметры теже
      * 9.
      */
+    /** получение id operation */
+    const { id }: ReturnType<typeof operationSelectors.operationSelectors> =
+      yield select(operationSelectors.operationSelectors);
 
-    yield call(operationSagas.getDataOperationById, data);
+    /** запускаем saga получение данных об операции которую хотим изменить */
+    yield call(operationSagas.getDataOperationById, id);
 
+    /** открытие модального окна, редактирования операции */
+    yield put(
+      modalActions.showModal({
+        isOpen: true,
+      }),
+    );
+
+    /* читаем токен из хранилища браузера */
+    const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
+      yield call(sagasToken.getTokenValueFromStorage);
+
+    /** запрос на сервер с измененёнными данными формы */
+    const resEditOperation: SagaReturnType<
+      typeof apiOperation.editOperationFetch
+    > = yield call(
+      apiOperation.editOperationFetch,
+      fieldsEditOPeration.payload,
+      tokenApp,
+      id,
+    );
     // eslint-disable-next-line no-console
-    console.log('edit-operation process getDataOperationById', data);
+    console.log('edit-operation process resEditOperation', resEditOperation);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('error worker budget app', error);
@@ -80,18 +105,9 @@ export function* addOperation(
      * 9. запускаем процесс показа обновленной страницы бюджета с новой сущностью
      */
 
-    // eslint-disable-next-line no-console
-    console.log(
-      'add operation process fieldsAddOPeration',
-      fieldsAddOPeration.payload,
-    );
-
     /* читаем токен из хранилища браузера */
     const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
       yield call(sagasToken.getTokenValueFromStorage);
-
-    // eslint-disable-next-line no-console
-    console.log('add operation process token', tokenApp);
 
     /** запускаем отправку на сервер данных с полей */
     const resNewOperation: SagaReturnType<
@@ -118,8 +134,7 @@ export function* budgetProcess(): SagaIterator {
   console.log('run budget process');
   try {
     /** запрос на сервер */
-    const operationsData: SagaReturnType<typeof apiBudgets.operationsFetch> =
-      yield call(apiBudgets.operationsFetch);
+    yield call(apiBudgets.operationsFetch);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('error worker budget app', error);
@@ -167,14 +182,14 @@ export function* operationProcess(): SagaIterator {
 }
 
 /**
- * Вотчер процесса инициализации приложения
+ * Вотчер процесса для операциё
  * @returns {void}
  */
 export function* operationProcessWatcher(): SagaIterator {
   yield all([
+    takeEvery(operationProcessActions.editOperation, editOperation),
     takeEvery(operationProcessActions.operation, operationProcess),
     takeEvery(operationProcessActions.budget, budgetProcess),
     takeEvery(operationProcessActions.addOperation, addOperation),
-    takeEvery(operationProcessActions.editOperation, editOperation),
   ]);
 }

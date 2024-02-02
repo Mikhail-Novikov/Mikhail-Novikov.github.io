@@ -62,7 +62,7 @@ export const BudgetsPage = (): React.ReactElement => {
 
   const handleOpenModal = () => {
     dispatch({
-      type: 'openModalAddOperation',
+      type: 'openModalAdd',
       payload: <OperationForm submitOnSuccess={submitAddOperation} />,
       titleModal: t('add_operation'),
     });

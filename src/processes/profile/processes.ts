@@ -1,18 +1,24 @@
 import { SagaIterator } from 'redux-saga';
-import { SagaReturnType, all, call, put, takeEvery } from 'redux-saga/effects';
+import {
+  SagaReturnType,
+  all,
+  call,
+  delay,
+  put,
+  takeEvery,
+} from 'redux-saga/effects';
 
 import { api, actions as profileActions } from '@features/profile';
 import { sagas as sagasToken } from '@features/token';
 
 import { actions as profileProcessAction } from './actions';
 /**
- * Процесс инициализации приложения
+ * Процесс для авторизованного пользователя с токеном
  * @returns {void}
  */
 export function* profileProcess(): SagaIterator {
   try {
-    // eslint-disable-next-line no-console
-    /* читаем токен из хранилища браузера */
+    /** читаем токен из хранилища браузера */
     const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
       yield call(sagasToken.getTokenValueFromStorage);
 
@@ -33,20 +39,39 @@ export function* profileProcess(): SagaIterator {
      *
      *  если пользователь НЕ зарегистрирован isAuth = false
      */
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('error profile process', error);
+  }
+}
 
-    /** Записываем данные профиля в стейт ? */
+/**
+ * Процесс для авторизованного пользователя с токеном, смена пароля /profile/change-password POST PROTECTED
+ * @returns {void}
+ */
+export function* profileAuthProcess({
+  payload,
+}: ReturnType<typeof profileProcessAction.profileAuth>): SagaIterator {
+  try {
+    /** читаем токен из хранилища браузера */
+    const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
+      yield call(sagasToken.getTokenValueFromStorage);
 
-    /** данные профиля нам нужны только при открытии страницы профиля,
-     *  то есть надо сделать запрос на сервер и получить
-     *  данные профиля и показать на странице профиля */
+    /** запрос на сервер и получение положительного ответа о смене пароля */
+    const success: SagaReturnType<typeof api.profileChangePasswordFetch> =
+      yield call(api.profileChangePasswordFetch, payload, tokenApp);
 
-    /* процесс для profile */
-    /** 1. ручной переход на страницу профиля
-     *  2. запуск процесса Profile по хуку из компонента
-     *  3. запрос на сервер с получением данных для старницы
-     *  4. данные нужно отобразить на странице профиля через селектор
-     *  5. использовать селектор profileSelectors от setState редюсера
-     *  6. в компоненте извлекаем из селектора данные и парсим(подставляем) значения в разметку
+    /** пишем в setState признак успешного действия */
+    yield put(profileActions.changePasswordResult(success));
+    yield delay(10000);
+    yield put(profileActions.changePasswordResult(false));
+
+    /** ОТПРАВИТЬ ДАННЫЕ ПОЛЕЙ ФОРМЫ
+    /** 1. Поля password & newPassword отправка на сервер /profile/change-password POST
+     *  2. получить токен
+     *  3. запрос на сервер profileChangePasswordFetch (пароли и токен)
+     *  4. ответ получит setState вида - success: boolean
+     *  5. статус покажем на странице
      */
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -59,5 +84,8 @@ export function* profileProcess(): SagaIterator {
  * @returns {void}
  */
 export function* profileProcessWatcher(): SagaIterator {
-  yield all([takeEvery(profileProcessAction.profile, profileProcess)]);
+  yield all([
+    takeEvery(profileProcessAction.profile, profileProcess),
+    takeEvery(profileProcessAction.profileAuth, profileAuthProcess),
+  ]);
 }

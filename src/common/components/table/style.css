@@ -6,6 +6,7 @@
   border-color: #dee2e6;
   caption-side: bottom;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 body,
@@ -28,6 +29,7 @@ tr {
 
 .table th {
   font-size: 1.1em;
+  height: 45px;
 }
 
 .table tr {

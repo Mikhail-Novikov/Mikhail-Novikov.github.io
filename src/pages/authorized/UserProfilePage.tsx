@@ -5,7 +5,6 @@ import { useProfileProcessActions } from '@src/processes/profile';
 
 import { Profile } from '@common/components/form/profile';
 import { TFormValues } from '@common/components/form/profile/types';
-import { useAuthorization } from '@common/hooks';
 
 import { selectors as selecorsProfile } from '@features/profile/selectors';
 
@@ -14,10 +13,9 @@ import { selectors as selecorsProfile } from '@features/profile/selectors';
  * @returns - Компонент
  */
 export const UserProfilePage = (): React.ReactElement => {
-  const { isAuthorization } = useAuthorization();
-  const { profile } = useProfileProcessActions();
+  const { profile, profileAuth } = useProfileProcessActions();
 
-  const { email, signUpDate } = selecorsProfile.useProfileSelector();
+  const { email, signUpDate, isSuccess } = selecorsProfile.useProfileSelector();
 
   useEffect(() => {
     if (!email) {
@@ -25,9 +23,11 @@ export const UserProfilePage = (): React.ReactElement => {
     }
   }, [email]);
 
-  const submitForm = (values: TFormValues) => {
-    /** запустить редюсер c параметрами, далее процесс регистрации */
-    // getFieldsForm(values);
+  const submitForm = (
+    values: Pick<TFormValues, 'password' | 'newPassword'>,
+  ) => {
+    /** запустить процесс смены пароля */
+    profileAuth(values);
     // eslint-disable-next-line no-console
     console.log('values form profile', values);
   };
@@ -38,9 +38,9 @@ export const UserProfilePage = (): React.ReactElement => {
       <div className="width-75">
         <Profile
           submitOnSuccess={submitForm}
-          isAuthorization={isAuthorization}
           signUpDate={signUpDate}
           email={email}
+          isSuccess={isSuccess}
         />
       </div>
     </Layout>

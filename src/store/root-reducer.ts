@@ -5,13 +5,15 @@ import { combineReducers } from 'redux';
 import { nameFeatures } from '@common/constants';
 
 import { budgetReducer } from '@features/budgets';
+import { categoryReducer } from '@features/categories';
 import { initAppReducer } from '@features/init-app';
+import { modalReducer } from '@features/modal';
 import { operationReducer } from '@features/operation';
 import { profileReducer } from '@features/profile';
 import { registrationReducer } from '@features/registration';
 import { tokenReducer } from '@features/token';
 
-export const history = createHashHistory();
+export const history = createHashHistory({ basename: '/' });
 
 const rootReducer = combineReducers({
   [nameFeatures.router]: connectRouter(history),
@@ -21,6 +23,8 @@ const rootReducer = combineReducers({
   [nameFeatures.profile]: profileReducer,
   [nameFeatures.operation]: operationReducer,
   [nameFeatures.budget]: budgetReducer,
+  [nameFeatures.category]: categoryReducer,
+  [nameFeatures.modal]: modalReducer,
 });
 
 export default rootReducer;

@@ -1,11 +1,11 @@
 import { Field, Form, Formik } from 'formik';
 import '../form.css';
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TFieldsAddOPeration } from '@common/types';
 
-import { validateNumber, validateText } from '../ValidationShema';
+// import { validateNumber, validateText } from '../ValidationShema';
 import { ErrorMessages } from '../error-message';
 
 interface OperationFormProps {
@@ -28,7 +28,7 @@ export const OperationForm = ({
   formValues,
 }: OperationFormProps): React.ReactElement => {
   const dateInputValue = new Date().toISOString();
-  console.log('🚀 ~ formValues:', formValues);
+
   const incomingFormValues = {
     ...formValues,
     date: dateInputValue,

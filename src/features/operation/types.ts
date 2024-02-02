@@ -58,7 +58,7 @@ export type Profit = {
 export type Operation = Cost | Profit;
 
 export type OperationState = {
-  id: string;
+  id?: string;
   name?: string;
   desc?: string;
   amount?: number;

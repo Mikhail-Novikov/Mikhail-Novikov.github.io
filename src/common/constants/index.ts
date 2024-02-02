@@ -8,6 +8,8 @@ export const nameFeatures = {
   router: 'router' as const,
   operation: 'operation' as const,
   budget: 'budget' as const,
+  category: 'category' as const,
+  modal: 'modal' as const,
 };
 
 export const apiUrl = {

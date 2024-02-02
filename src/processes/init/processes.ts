@@ -52,9 +52,6 @@ export function* initProcess(): SagaIterator {
     const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
       yield call(sagasToken.getTokenValueFromStorage);
 
-    // eslint-disable-next-line no-console
-    console.log('читаем токен из хранилища браузера', tokenApp);
-
     /* Примитивная проверка токена */
     if (tokenApp.length > 25) {
       yield put(registrationActions.registrationSuccess());

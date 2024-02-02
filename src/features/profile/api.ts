@@ -1,6 +1,11 @@
 import { config } from '@common/config';
 
-import { AuthResult, ProfileState, SignInBody } from './types';
+import {
+  AuthResult,
+  ChangePasswordBody,
+  ProfileState,
+  SignInBody,
+} from './types';
 
 /**
  * Запрос на получение данных профиля
@@ -43,8 +48,40 @@ const signinFetch = ({ email, password }: SignInBody): Promise<AuthResult> => {
       console.log('errors api signin', errors);
     });
 };
+/**
+ * Запрос на авторизацию
+ * @param token - ?
+ * @returns - token
+ */
+
+const profileChangePasswordFetch = (
+  { password, newPassword }: ChangePasswordBody,
+  token: string,
+): Promise<boolean> => {
+  const body = JSON.stringify({
+    password,
+    newPassword,
+  });
+
+  return fetch(config.api.profileChangePassword, {
+    method: 'POST',
+    body,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((res) => res.success)
+    .catch((errors) => {
+      // eslint-disable-next-line no-console
+      console.log('errors api profileChangePasswordFetch', errors);
+    });
+};
 
 export const api = {
   profileFetch,
   signinFetch,
+  profileChangePasswordFetch,
 };
