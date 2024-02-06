@@ -5,3 +5,7 @@ export type TFormValues = {
   description: string;
   amount: number;
 };
+
+export type TFormSelectValues = {
+  id: string;
+};

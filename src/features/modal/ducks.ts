@@ -7,14 +7,19 @@ import { ModalState } from './types';
 
 export const initialState = {
   isOpen: false,
-} as ModalState;
+  isOpenSuccess: false,
+  isConfirm: false,
+  message: '',
+  title: '',
+  rightBtn: '',
+} as unknown as ModalState;
 
 const modalSlice = createSlice({
   name: nameFeatures.modal,
   initialState,
   reducers: {
     /**
-     * Экшен открытия модального окна
+     * Экшен открытия модального окна для форм
      * @param payload - Параметры открываемого модального окна
      * @returns {ModalState} Новый стейт признак открытого окна
      */
@@ -25,6 +30,35 @@ const modalSlice = createSlice({
       ...state,
       isOpen,
     }),
+    /**
+     * Экшен открытия модального окна для сообщений
+     * @param payload - Параметры открываемого модального окна
+     * @returns {ModalState} Новый стейт с параметрами для окна
+     */
+    showModalMessage: (
+      state: Pick<ModalState, 'isOpen'>,
+      {
+        payload: { isOpenSuccess, message = '', title = '', rightBtn },
+      }: PayloadAction<Omit<ModalState, 'isOpen'>>,
+    ): ModalState => ({
+      ...state,
+      isOpenSuccess,
+      message,
+      title,
+      rightBtn,
+    }),
+    /**
+     * Экшен клика по кнопке подтверждения
+     * @param payload
+     * @returns {boolean}
+     */
+    confirm: (
+      state: ModalState,
+      { payload: isConfirm }: PayloadAction<boolean>,
+    ): ModalState => ({
+      ...state,
+      isConfirm,
+    }),
   },
 });
 
@@ -34,4 +68,4 @@ export const actions = {
   ...modalSlice.actions,
 };
 
-export const useModal = (): typeof actions => useActions(actions);
+export const useModalActions = (): typeof actions => useActions(actions);

@@ -1,16 +1,17 @@
+import cn from 'clsx';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 
 import '../style.css';
 import { TableBtn } from '@common/features/control';
-import { TTableRows } from '@common/types';
+import { TTableColumns } from '@common/types';
 
 interface BudgetTableRowProps {
-  itemRow: TTableRows[];
+  itemRow: TTableColumns[];
   type: string;
   handleClickRow: () => void;
   handleClickEditOperation: () => void;
-  itemIdRow: string;
+  handleClickDeleteOperation: () => void;
 }
 
 /**
@@ -21,24 +22,36 @@ const BudgetTableRow = ({
   type,
   handleClickRow,
   handleClickEditOperation,
-  itemIdRow,
-}: BudgetTableRowProps): React.ReactElement => (
-  <tr className="pointer">
-    <td className="padding-left-none" aria-label="cell">
-      <div className={`${type === 'Cost' ? 'glyph-Cost' : 'glyph-income'}`} />
-    </td>
-    {itemRow?.map((item) => (
-      <td key={uuid()} onClick={handleClickRow}>
-        <div className="margin-right-24 txt-line-clamp-2">{item}</div>
+  handleClickDeleteOperation,
+}: BudgetTableRowProps): React.ReactElement => {
+  const isDisabled = itemRow[1] === undefined;
+
+  return (
+    <tr className={cn(isDisabled ? '' : 'pointer')}>
+      <td
+        aria-label="cell"
+        className={cn('padding-left-none', isDisabled ? 'disabled' : '')}
+      >
+        <div className={`${type === 'Cost' ? 'glyph-Cost' : 'glyph-income'}`} />
       </td>
-    ))}
-    <td aria-label="table-control">
-      <TableBtn
-        itemIdRow={itemIdRow}
-        handleClickEditOperation={handleClickEditOperation}
-      />
-    </td>
-  </tr>
-);
+      {itemRow?.map((item) => (
+        <td
+          key={uuid()}
+          onClick={handleClickRow}
+          className={cn(isDisabled ? 'disabled' : 'pointer')}
+        >
+          <div className="margin-right-24 txt-line-clamp-2">{item}</div>
+        </td>
+      ))}
+      <td aria-label="table-control">
+        <TableBtn
+          isDisabled={isDisabled}
+          deleteClick={handleClickDeleteOperation}
+          editClick={handleClickEditOperation}
+        />
+      </td>
+    </tr>
+  );
+};
 
 export default BudgetTableRow;

@@ -5,3 +5,8 @@ export type TFormValues = {
   description: string;
   amount: number;
 };
+
+export type Category = {
+  name: string;
+  photo?: string;
+};

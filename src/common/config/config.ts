@@ -14,10 +14,6 @@ const createConfig = () => ({
     categoryList: { url: '/categories', name: 'category-list' },
     /** Карточка операции */
     budgetItem: { url: '/operation' },
-    /** Список расходов */
-    budgetCostList: { url: '/cost-list', name: 'cost-list' },
-    /** Список доходов */
-    budgetProfitList: { url: '/profit-list', name: 'profit-list' },
   },
   api: {
     /**

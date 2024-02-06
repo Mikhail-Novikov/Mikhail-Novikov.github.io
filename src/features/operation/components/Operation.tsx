@@ -22,6 +22,8 @@ export const Operation = ({
     day: 'numeric',
   } as const;
 
+  const { category } = dataOperations;
+
   const createDate = new Date(dataOperations?.createdAt);
 
   const formatDates = (el: string) => el.replace(/^"(.+(?="$))"$/, '$1');
@@ -54,7 +56,7 @@ export const Operation = ({
           <dd>{dataOperations?.name ?? '-'}</dd>
 
           <dt>Категория</dt>
-          <dd>{TBudgetType[dataOperations?.type] ?? '-'}</dd>
+          <dd>{category.name ?? '-'}</dd>
 
           <dt>Описание</dt>
           <dd>{dataOperations?.desc ?? '-'}</dd>

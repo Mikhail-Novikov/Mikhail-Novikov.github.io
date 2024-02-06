@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import cn from 'clsx';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import './modal.css';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +13,8 @@ interface ModalProps {
   titleModal: string;
   /** Признак открытия модального окна */
   isOpenModal: boolean;
+  /** Текст правой кнопки */
+  textRightButton?: 'Сохранить' | 'Удалить' | 'Отправить';
   /** Обработчик кнопки закрытия окна  */
   handleClickCancel: () => void;
   /** Обработчик кнопки подтверждения  */
@@ -27,6 +30,7 @@ export const Modal = ({
   isOpenModal,
   handleClickCancel,
   handleClickSubmit,
+  textRightButton = 'Сохранить',
 }: ModalProps): React.ReactElement => {
   // eslint-disable-next-line id-length
   const { t } = useTranslation();
@@ -49,14 +53,20 @@ export const Modal = ({
                 type="button"
               />
             </li>
-            <li>
-              <Button
-                label={t('save')}
-                primary
-                onClick={handleClickSubmit}
-                type="submit"
-              />
-            </li>
+            {!!textRightButton && (
+              <li>
+                <Button
+                  label={textRightButton}
+                  primary={
+                    textRightButton === 'Сохранить' ||
+                    textRightButton === 'Отправить'
+                  }
+                  danger={textRightButton === 'Удалить'}
+                  onClick={handleClickSubmit}
+                  type="submit"
+                />
+              </li>
+            )}
           </ul>
         </div>
       </div>

@@ -1,7 +1,10 @@
 import { ReactElement } from 'react';
 
+import { TRightButtonModal } from '@common/types';
+
 export type StateType = {
   titleModal: string;
+  rightBtn?: TRightButtonModal;
   action?: Action;
   isOpen?: boolean;
   isEdit?: boolean;
@@ -12,6 +15,7 @@ export type Action = {
   payload: ReactElement<string>;
   type: string;
   titleModal: string;
+  rightBtn?: string;
 };
 
 export type ReducerType = {
@@ -20,4 +24,5 @@ export type ReducerType = {
   isEdit?: boolean;
   form?: ReactElement<string>;
   titleModal?: string;
+  rightBtn?: string;
 };

@@ -22,13 +22,3 @@ export const validateEmail = (value: string): string => {
   }
   return null;
 };
-
-export const validatePassword = (value: string): string => {
-  if (!value) {
-    return 'Введите пароль';
-  }
-  if (value.length < 6) {
-    return 'Пароль должен быть не менее 6 символов';
-  }
-  return null;
-};

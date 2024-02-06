@@ -4,13 +4,13 @@ import { v4 as uuid } from 'uuid';
 import '../style.css';
 import { TableBtn } from '@common/features/control';
 
-import { TTableRows } from './types';
+import { TTableColumns } from '@features/categories/types';
 
-interface BudgetTableRowProps {
-  itemRow: TTableRows[];
-  handleClickRow: () => void;
+interface CategoryTableRowProps {
+  itemRow: TTableColumns[];
+  handleClickRow?: () => void;
   handleClickEditCategory: () => void;
-  itemIdRow: string;
+  handleClickDeleteCategory?: () => void;
 }
 
 /**
@@ -20,8 +20,8 @@ const CategoryTableRow = ({
   itemRow,
   handleClickRow,
   handleClickEditCategory,
-  itemIdRow,
-}: BudgetTableRowProps): React.ReactElement => (
+  handleClickDeleteCategory,
+}: CategoryTableRowProps): React.ReactElement => (
   <tr className="pointer">
     {itemRow?.map((item) => (
       <td key={uuid()} onClick={handleClickRow}>
@@ -29,7 +29,10 @@ const CategoryTableRow = ({
       </td>
     ))}
     <td aria-label="table-control">
-      <TableBtn itemIdRow={itemIdRow} editClick={handleClickEditCategory} />
+      <TableBtn
+        editClick={handleClickEditCategory}
+        deleteClick={handleClickDeleteCategory}
+      />
     </td>
   </tr>
 );

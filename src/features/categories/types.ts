@@ -13,9 +13,14 @@ export type CategoryState = {
   photo?: string;
   createdAt: string;
   updatedAt: Date;
+  data: CategoryState[];
 };
 
-export type TTableRows = {
+export type Categories = {
+  data: CategoryState[];
+};
+
+export type TTableColumns = {
   createdAt: string;
   name: string;
   photo?: string;
@@ -23,7 +28,7 @@ export type TTableRows = {
 
 export type TTableList = {
   id: string;
-  name: TTableRows[];
+  nameColumns: TTableColumns[];
 };
 
 export type ActionEdit = {

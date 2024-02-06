@@ -1,20 +1,34 @@
 import { config } from '@common/config';
 
+import { OperationState } from '@features/operation/types';
+
 import { BudgetState } from './types';
 
 /**
- * Запрос на получение списка операций
- * @param limit - количество операций
- * @returns - Список операций
+ * Запрос на получение лимитированного списка операций
+ * @param limit - количество
+ * @param token - токен приложения
+ * @returns - список
  */
 
-const getOperations = (limit: number): Promise<BudgetState[]> =>
+const getOperations = (token: string, limit?: number): Promise<BudgetState[]> =>
   fetch(
     `${config.api.getOperations}?${new URLSearchParams({
       pagination: JSON.stringify({
-        pageSize: limit,
+        pageSize: limit ?? Infinity,
+      }),
+      sorting: JSON.stringify({
+        type: 'DESC',
+        field: 'createdAt',
       }),
     }).toString()}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    },
   )
     .then((res) => res.json())
     .then((res) => res.data);
@@ -24,11 +38,13 @@ const getOperations = (limit: number): Promise<BudgetState[]> =>
  * @param токен
  * @returns {Operations} - данные всех операций
  */
-const operationsFetch = (): Promise<BudgetState[]> =>
+const operationsAllFetch = (token: string): Promise<OperationState[]> =>
   fetch(`${config.api.getOperations}`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
   })
     .then((res) => res.json())
@@ -36,5 +52,5 @@ const operationsFetch = (): Promise<BudgetState[]> =>
 
 export const api = {
   getOperations,
-  operationsFetch,
+  operationsAllFetch,
 };

@@ -19,14 +19,8 @@ import { addOperationReducer } from './store/reducers';
  * @returns - Компонент
  */
 export function AppRoutes(): JSX.Element {
-  const {
-    budgetList,
-    categoryList,
-    budgetItem,
-    budgetCostList,
-    authorization,
-    userProfile,
-  } = config.routes;
+  const { budgetList, categoryList, budgetItem, authorization, userProfile } =
+    config.routes;
 
   const [state, dispatch] = useReducer(addOperationReducer, {});
 
@@ -43,8 +37,6 @@ export function AppRoutes(): JSX.Element {
             <Route exact path={categoryList.url} component={CategoryPage} />
 
             <Route exact path={budgetItem.url} component={BudgetItemPage} />
-            <Route exact path={budgetCostList.url} component={BudgetsPage} />
-            {/* по ТЗ авторизация должна быть не доступна для не рег. пользователей */}
             <Route exact path={userProfile.url} component={UserProfilePage} />
           </Switch>
         </Router>

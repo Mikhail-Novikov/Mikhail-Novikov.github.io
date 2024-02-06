@@ -1,17 +1,16 @@
 import '../form.css';
 import React, { useEffect } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useForm } from 'react-hook-form';
 
-import { TFieldsAddOPeration } from '@common/types';
+import { CategoryState } from '@features/categories/types';
 
-interface OperationFormProps {
+interface EditCategoryFormProps {
   /** режим редактирования */
   isEdit?: boolean;
   /** Данные для полей операции при редактировании */
-  formValues?: any;
+  formValues?: CategoryState;
   /** Обработчик формы */
-  submitOnSuccess: (values: TFieldsAddOPeration) => void;
+  submitOnSuccess: (values: CategoryState) => void;
 }
 /**
  * Компонент формы создание и редактирования операции
@@ -21,7 +20,7 @@ interface OperationFormProps {
 export const EditCategoryForm = ({
   submitOnSuccess,
   formValues,
-}: OperationFormProps): React.ReactElement => {
+}: EditCategoryFormProps): React.ReactElement => {
   const dateInputValue = new Date().toISOString();
 
   const incomingFormValues = {

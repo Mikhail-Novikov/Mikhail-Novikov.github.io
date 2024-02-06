@@ -1,2 +1,2 @@
-export { OperationCreateAndEditForm } from './OperationCreateAndEditForm';
-export { OperationForm } from './OperationForm';
+export { OperationCreateForm } from './OperationCreateForm';
+export { OperationEditForm } from './OperationEditForm';

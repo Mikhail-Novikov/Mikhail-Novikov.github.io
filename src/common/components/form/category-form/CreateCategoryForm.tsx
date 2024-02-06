@@ -1,54 +1,39 @@
 import '../form.css';
-import React, { useEffect } from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import { TFieldsAddOPeration } from '@common/types';
+import { Category } from './types';
 
-interface OperationFormProps {
-  /** режим редактирования */
-  isEdit?: boolean;
+interface CreateCategoryFormProps {
   /** Данные для полей операции при редактировании */
-  formValues?: any;
+  formValues?: Category;
   /** Обработчик формы */
-  submitOnSuccess: (values: TFieldsAddOPeration) => void;
+  submitOnSuccess: (values: Category) => void;
 }
 /**
  * Компонент формы создание и редактирования операции
- * @param isEdit - режим редактирования
- * @returns - компонет кнопок
+ * @param {CreateCategoryFormProps}
+ * @returns - компонет формы
  */
 export const CreateCategoryForm = ({
-  isEdit,
   submitOnSuccess,
   formValues,
-}: OperationFormProps): React.ReactElement => {
+}: CreateCategoryFormProps): React.ReactElement => {
   const dateInputValue = new Date().toISOString();
-
-  const initialValuesOfForm = {
-    name: 'add',
-  };
 
   const incomingFormValues = {
     ...formValues,
+    name: formValues?.name,
     createdAt: dateInputValue,
   };
-
-  const isInitialValue = isEdit ? incomingFormValues : initialValuesOfForm;
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
-    defaultValues: isInitialValue,
+    defaultValues: incomingFormValues,
   });
-
-  useEffect(() => {
-    setValue('name', formValues?.name);
-    setValue('createdAt', dateInputValue);
-  }, [formValues]);
 
   return (
     <form
@@ -63,7 +48,6 @@ export const CreateCategoryForm = ({
         <input
           type="text"
           {...register('name', { required: true, minLength: 4 })}
-          aria-invalid={errors.name ? 'true' : 'false'}
         />
         {errors.name?.type === 'required' && (
           <div className="txt-danger txt-micro" role="alert">

@@ -1,4 +1,4 @@
-export type TTableRows = {
+export type TTableColumns = {
   id: string;
   name: string;
   photo?: string;

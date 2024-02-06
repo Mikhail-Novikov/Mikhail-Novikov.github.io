@@ -32,10 +32,15 @@ tr {
   height: 45px;
 }
 
-.table tr {
+.table tr:not(.disabled) {
   cursor: pointer;
 }
 
+.table .disabled {
+  pointer-events: none;
+  opacity: 0.2;
+  filter: saturate(.6);
+}
 .table-title {
   color: #6c757d;
   line-height: 1.2;

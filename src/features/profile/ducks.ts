@@ -16,7 +16,7 @@ export const initialState = {
   /** дата регистрации пользователя */
   signUpDate: '',
   /** признак успешной операции */
-  isSuccess: false,
+  isConfirmEditProfile: false,
 } as unknown as ProfileState;
 
 const profileSlice = createSlice({
@@ -47,10 +47,10 @@ const profileSlice = createSlice({
     }),
     changePasswordResult: (
       state: ProfileState,
-      { payload: isSuccess }: PayloadAction<boolean>,
+      { payload: isConfirmEditProfile }: PayloadAction<boolean>,
     ): ProfileState => ({
       ...state,
-      isSuccess,
+      isConfirmEditProfile,
     }),
   },
 });

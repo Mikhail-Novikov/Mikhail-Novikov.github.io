@@ -7,7 +7,7 @@ import { createPortal } from 'react-dom';
 import { Header, Modal } from '@common/components';
 import { useAuthorization } from '@common/hooks';
 
-import { useModal } from '@features/modal';
+import { useModalActions, selectors } from '@features/modal';
 
 interface LayoutProps {
   /** Контент */
@@ -26,11 +26,13 @@ export const Layout = ({ children }: LayoutProps): React.ReactElement => {
   const [themesName, setThemeState] = React.useState<Themes>();
   const { state, dispatch } = useContextReducer();
   const { isAuthorization } = useAuthorization();
-  const { showModal } = useModal();
+  const { showModal } = useModalActions();
+  const { rightBtn } = selectors.useModalSelector();
 
   const closeModal = () => {
     showModal({
       isOpen: false,
+      isOpenSuccess: false,
     });
     dispatch({
       type: 'closeModal',
@@ -49,6 +51,7 @@ export const Layout = ({ children }: LayoutProps): React.ReactElement => {
           <Modal
             content={state.form}
             titleModal={state.titleModal}
+            textRightButton={rightBtn || state.rightBtn}
             isOpenModal={state.isOpen}
             handleClickCancel={closeModal}
           />,

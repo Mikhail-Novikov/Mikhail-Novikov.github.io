@@ -12,6 +12,7 @@ export const addOperationReducer = (
         isEdit: false,
         form: action.payload,
         titleModal: action.titleModal,
+        rightBtn: action.rightBtn,
       };
     }
     case 'closeModal': {
@@ -21,6 +22,7 @@ export const addOperationReducer = (
         isEdit: false,
         form: null,
         titleModal: '',
+        rightBtn: '',
       };
     }
     case 'editModalOperation': {
@@ -30,6 +32,7 @@ export const addOperationReducer = (
         isOpen: true,
         form: action.payload,
         titleModal: action.titleModal,
+        rightBtn: action.rightBtn,
       };
     }
     default:

@@ -1,52 +1,46 @@
-import { useContextReducer } from '@context/ContextReducer';
+import cn from 'clsx';
 import React from 'react';
-import './style.css';
-import { useTranslation } from 'react-i18next';
 
+import './style.css';
 import deletePathImage from '@src/images/delete.svg';
 import editPathImage from '@src/images/modify.svg';
 
 import { Button } from '@common/components';
-import { OperationCreateAndEditForm } from '@common/components/form/operation-form';
 
 interface TableBtnProps {
+  /** Событие клика  редактирования */
   editClick: () => void;
+  /** Событие клика  редактирования */
+  deleteClick?: () => void;
+  /** Событие клика  редактирования */
+  isDisabled?: boolean;
 }
 
 /**
- * Компонент кнопок редактирования и удаления операции
+ * Компонент кнопок редактирования и удаления операции/категории
+ * @param {TableBtnProps}
  * @returns - компонет кнопок
  */
-export const TableBtn = ({ editClick }: TableBtnProps): React.ReactElement => {
-  // eslint-disable-next-line id-length
-  const { t } = useTranslation();
-  const { dispatch } = useContextReducer();
-
-  const deleteClick = () => {
-    dispatch({
-      type: 'deleteModalOperation',
-      payload: (
-        <OperationCreateAndEditForm isEdit submitOnSuccess={() => null} />
-      ),
-      titleModal: t('edit_operation'),
-    });
-  };
-
-  return (
-    <div className="table-btn">
+export const TableBtn = ({
+  editClick,
+  deleteClick,
+  isDisabled,
+}: TableBtnProps): React.ReactElement => (
+  <div className="table-btn">
+    <div className={cn(isDisabled ? 'disabled' : '')}>
       <Button
         type="button"
         label={<img src={editPathImage} alt="" />}
         isBorder={false}
         onClick={editClick}
       />
-
-      <Button
-        type="button"
-        label={<img src={deletePathImage} alt="" />}
-        isBorder={false}
-        onClick={deleteClick}
-      />
     </div>
-  );
-};
+
+    <Button
+      type="button"
+      label={<img src={deletePathImage} alt="" />}
+      isBorder={false}
+      onClick={deleteClick}
+    />
+  </div>
+);

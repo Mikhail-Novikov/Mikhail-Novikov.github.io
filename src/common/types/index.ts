@@ -1,3 +1,5 @@
+export type TRightButtonModal = 'Сохранить' | 'Удалить' | 'Отправить';
+
 export type Category = {
   id: string;
   name: string;
@@ -6,17 +8,18 @@ export type Category = {
   updatedAt: Date;
 };
 
-export type TTableRows = {
+export type TTableColumns = {
   name: string;
-  category: Category;
+  category: string;
   desc: string;
   amount: number;
 };
 
 export type TTableList = {
   id: string;
+  categoryId: string;
   type: string;
-  name: TTableRows[];
+  nameColumns: TTableColumns[];
 };
 
 export type Operation = {

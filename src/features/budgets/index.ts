@@ -4,3 +4,4 @@ export { selectors } from './selectors';
 export { useBudget, actions, budgetReducer } from './ducks';
 
 export { api } from './api';
+export { sagas } from './saga';

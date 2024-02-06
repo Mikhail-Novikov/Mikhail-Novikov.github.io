@@ -8,12 +8,15 @@ import {
   takeEvery,
 } from 'redux-saga/effects';
 
+import { ErrorCode } from '@common/types/errorCodes';
+
+import { actions as modalActions } from '@features/modal';
 import { api, actions as profileActions } from '@features/profile';
 import { sagas as sagasToken } from '@features/token';
 
 import { actions as profileProcessAction } from './actions';
 /**
- * Процесс для авторизованного пользователя с токеном
+ * Процесс для авторизованного пользователя
  * @returns {void}
  */
 export function* profileProcess(): SagaIterator {
@@ -28,17 +31,8 @@ export function* profileProcess(): SagaIterator {
       tokenApp,
     );
 
-    /** пишем в setState полученные данные чтоб потом извлечь из седетора в компоненте */
+    /** пишем в setState полученные данные чтоб потом извлечь из селектора в компоненте */
     yield put(profileActions.setState(profileData));
-
-    /** АВТОМАТИЧЕСКАЯ ПОДРУЗКА ДАННЫХ ИЗ ПРОФИЛЯ  - ИНИЦИАЛИЗАЦИЯ */
-    /** 1. ручной переход на страницу профиля если пользователь зарегистрирован isAuth = true
-     *  2. получить токен с localStorage.getItem и передать параметром в запрос
-     *  2. запрос на получение данных с сервера profileFetch (дата регистрации, почта)
-     *  3. ответ получит setState
-     *
-     *  если пользователь НЕ зарегистрирован isAuth = false
-     */
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('error profile process', error);
@@ -46,33 +40,46 @@ export function* profileProcess(): SagaIterator {
 }
 
 /**
- * Процесс для авторизованного пользователя с токеном, смена пароля /profile/change-password POST PROTECTED
+ * Процесс для авторизованного пользователя, смена пароля /profile/change-password POST PROTECTED
  * @returns {void}
  */
-export function* profileAuthProcess({
+export function* profileEditProcess({
   payload,
-}: ReturnType<typeof profileProcessAction.profileAuth>): SagaIterator {
+}: ReturnType<typeof profileProcessAction.profileEdit>): SagaIterator {
   try {
     /** читаем токен из хранилища браузера */
     const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
       yield call(sagasToken.getTokenValueFromStorage);
 
     /** запрос на сервер и получение положительного ответа о смене пароля */
-    const success: SagaReturnType<typeof api.profileChangePasswordFetch> =
-      yield call(api.profileChangePasswordFetch, payload, tokenApp);
+    const {
+      errors,
+      success,
+    }: SagaReturnType<typeof api.profileChangePasswordFetch> = yield call(
+      api.profileChangePasswordFetch,
+      payload,
+      tokenApp,
+    );
 
+    if (errors?.length) {
+      const nameError = errors[0].extensions.code;
+
+      // eslint-disable-next-line max-depth
+      if (ErrorCode.ERR_INCORRECT_PASSWORD === nameError) {
+        yield put(
+          modalActions.showModalMessage({
+            isOpenSuccess: true,
+            message: 'Неверно набран старый пароль',
+            title: 'Пароль',
+            rightBtn: null,
+          }),
+        );
+      }
+    }
     /** пишем в setState признак успешного действия */
     yield put(profileActions.changePasswordResult(success));
     yield delay(10000);
     yield put(profileActions.changePasswordResult(false));
-
-    /** ОТПРАВИТЬ ДАННЫЕ ПОЛЕЙ ФОРМЫ
-    /** 1. Поля password & newPassword отправка на сервер /profile/change-password POST
-     *  2. получить токен
-     *  3. запрос на сервер profileChangePasswordFetch (пароли и токен)
-     *  4. ответ получит setState вида - success: boolean
-     *  5. статус покажем на странице
-     */
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('error profile process', error);
@@ -86,6 +93,6 @@ export function* profileAuthProcess({
 export function* profileProcessWatcher(): SagaIterator {
   yield all([
     takeEvery(profileProcessAction.profile, profileProcess),
-    takeEvery(profileProcessAction.profileAuth, profileAuthProcess),
+    takeEvery(profileProcessAction.profileEdit, profileEditProcess),
   ]);
 }

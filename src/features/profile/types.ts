@@ -1,3 +1,5 @@
+import { ErrorCode } from '@common/types/errorCodes';
+
 export type ChangePasswordResult = {
   success?: boolean;
 };
@@ -7,7 +9,7 @@ export type ProfileState = {
   name: string;
   email: string;
   signUpDate: Date;
-  isSuccess: boolean;
+  isConfirmEditProfile: boolean;
 };
 
 export type SignInBody = {
@@ -22,4 +24,11 @@ export type AuthResult = {
 export type ChangePasswordBody = {
   password: string;
   newPassword: string;
+};
+
+export type Errors = {
+  name: 'IncorrectPasswordError';
+  extensions: {
+    code: ErrorCode;
+  };
 };

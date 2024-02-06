@@ -11,7 +11,7 @@
   "table_title_link_details": "Детали операции",
   "currency": "{{ruValue, currency}}",
   "save": "Сохранить",
-  "cancel": "Отмена",
+  "cancel": "Закрыть",
   "edit": "Изменить",
   "delete": "Удалить",
   "add_operation": "Добавление операции",

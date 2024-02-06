@@ -11,10 +11,18 @@ export enum TBudgetType {
   Cost = 'Расходы',
 }
 
+export type TTableColumns = {
+  name: string;
+  category: string;
+  desc: string;
+  amount: number;
+};
+
 export type TTableList = {
   id: string;
+  categoryId: string;
   type: string;
-  name: string[];
+  nameColumns: TTableColumns[];
 };
 
 export type TBudget = TBudgetType | TTableList;
@@ -58,10 +66,6 @@ export type Profit = {
 export type Operation = Cost | Profit;
 
 export type OperationState = {
-  id?: string;
-  name?: string;
-  desc?: string;
-  amount?: number;
-  createdAt?: Date;
-  type?: 'Profit' | 'Cost';
-};
+  categoryId: string;
+  date: string;
+} & Operation;

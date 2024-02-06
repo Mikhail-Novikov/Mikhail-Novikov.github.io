@@ -1,4 +1,5 @@
 import { config } from '@common/config';
+import { Category } from '@common/types';
 
 import { CategoryState } from './types';
 
@@ -55,9 +56,12 @@ const categoriesPostFetch = (token: string): Promise<CategoryState[]> =>
  * Запрос на создание категории
  * @param fieldsAddCategory
  * @param токен
- * @returns {Category} - данные всех категорий
+ * @returns {Category}
  */
-const addCategoryFetch = (fieldsAddCategory: any, token: string): any => {
+const addCategoryFetch = (
+  fieldsAddCategory: Partial<Category>,
+  token: string,
+): any => {
   const { name } = fieldsAddCategory;
 
   const body = JSON.stringify({
@@ -73,22 +77,41 @@ const addCategoryFetch = (fieldsAddCategory: any, token: string): any => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  })
-    .then((res) => res.json())
-    .then((res) => res.data);
+  }).then((res) => res.status);
+};
+
+/**
+ * Запрос на удаление категории по id
+ * @param fieldsAddCategory
+ * @param токен
+ * @returns {Category}
+ */
+const deleteCategoryFetch = async (
+  id: string,
+  token: string,
+): Promise<number> => {
+  const res = await fetch(`${config.api.getCategory}${id}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return res.status;
 };
 
 /**
  * Запрос на редактирование категории по id
  * @param fieldsAddCategory
  * @param токен
- * @returns {Category} - данные всех категорий
+ * @returns {Category}
  */
-const editCategoryFetch = (
-  fieldsAddCategory: any,
+const editCategoryFetch = async (
+  fieldsAddCategory: Partial<CategoryState>,
   id: string,
   token: string,
-): any => {
+): Promise<number> => {
   const { name } = fieldsAddCategory;
 
   const body = JSON.stringify({
@@ -96,7 +119,7 @@ const editCategoryFetch = (
     photo: fieldsAddCategory?.photo,
   });
 
-  return fetch(`${config.api.getCategory}${id}`, {
+  const res = await fetch(`${config.api.getCategory}${id}`, {
     method: 'PATCH',
     body,
     headers: {
@@ -104,7 +127,8 @@ const editCategoryFetch = (
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  }).then((res) => res);
+  });
+  return res.status;
 };
 
 export const api = {
@@ -113,4 +137,5 @@ export const api = {
   categoriesPostFetch,
   addCategoryFetch,
   editCategoryFetch,
+  deleteCategoryFetch,
 };

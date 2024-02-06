@@ -6,6 +6,7 @@ import { useRegistrationProcessActions } from '@src/processes/registration';
 import { RegistrationForm } from '@common/components/form';
 import { TFormValues } from '@common/components/form/registration-form/types';
 
+import { StatusMessageModal } from '@features/modal';
 import { useRegistration } from '@features/registration/ducks';
 
 /**
@@ -28,6 +29,7 @@ export const RegistrationPage = (): React.ReactElement => {
       <div className="width-75">
         <RegistrationForm submitOnSuccess={submitForm} />
       </div>
+      <StatusMessageModal />
     </Layout>
   );
 };

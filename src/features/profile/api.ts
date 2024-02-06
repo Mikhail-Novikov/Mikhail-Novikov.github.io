@@ -1,11 +1,7 @@
+import { TFormValues } from '@common/components/form/profile-form/types';
 import { config } from '@common/config';
 
-import {
-  AuthResult,
-  ChangePasswordBody,
-  ProfileState,
-  SignInBody,
-} from './types';
+import { ProfileState } from './types';
 
 /**
  * Запрос на получение данных профиля
@@ -25,45 +21,23 @@ const profileFetch = (token: string): Promise<ProfileState> =>
     });
 
 /**
- * Запрос на авторизацию
- * @param token - ?
- * @returns - token
+ * Запрос на смену пароля
+ * @param token
+ * @param password
+ * @param newPassword
+ * @returns - status
  */
-const urlencoded = new URLSearchParams();
-
-const signinFetch = ({ email, password }: SignInBody): Promise<AuthResult> => {
-  urlencoded.append('email', `${email}`);
-  urlencoded.append('password', `${password}`);
-
-  return fetch(config.api.signinUser, {
-    method: 'post',
-    body: urlencoded,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-  })
-    .then((res) => res.json())
-    .catch((errors) => {
-      // eslint-disable-next-line no-console
-      console.log('errors api signin', errors);
-    });
-};
-/**
- * Запрос на авторизацию
- * @param token - ?
- * @returns - token
- */
-
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const profileChangePasswordFetch = (
-  { password, newPassword }: ChangePasswordBody,
+  { password, newPassword }: Partial<TFormValues>,
   token: string,
-): Promise<boolean> => {
+) => {
   const body = JSON.stringify({
     password,
     newPassword,
   });
 
-  return fetch(config.api.profileChangePassword, {
+  const res = fetch(config.api.profileChangePassword, {
     method: 'POST',
     body,
     headers: {
@@ -73,15 +47,14 @@ const profileChangePasswordFetch = (
     },
   })
     .then((res) => res.json())
-    .then((res) => res.success)
-    .catch((errors) => {
-      // eslint-disable-next-line no-console
-      console.log('errors api profileChangePasswordFetch', errors);
-    });
+    .then((res) => ({
+      errors: res.errors,
+      success: res.success,
+    }));
+  return res;
 };
 
 export const api = {
   profileFetch,
-  signinFetch,
   profileChangePasswordFetch,
 };

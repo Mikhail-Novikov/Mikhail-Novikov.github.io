@@ -3,9 +3,10 @@ import React, { useEffect } from 'react';
 import { Layout } from '@layouts/index';
 import { useProfileProcessActions } from '@src/processes/profile';
 
-import { Profile } from '@common/components/form/profile';
-import { TFormValues } from '@common/components/form/profile/types';
+import { Profile } from '@common/components/form/profile-form';
+import { TFormValues } from '@common/components/form/profile-form/types';
 
+import { StatusMessageModal } from '@features/modal';
 import { selectors as selecorsProfile } from '@features/profile/selectors';
 
 /**
@@ -13,9 +14,10 @@ import { selectors as selecorsProfile } from '@features/profile/selectors';
  * @returns - Компонент
  */
 export const UserProfilePage = (): React.ReactElement => {
-  const { profile, profileAuth } = useProfileProcessActions();
+  const { profile, profileEdit } = useProfileProcessActions();
 
-  const { email, signUpDate, isSuccess } = selecorsProfile.useProfileSelector();
+  const { email, signUpDate, isConfirmEditProfile } =
+    selecorsProfile.useProfileSelector();
 
   useEffect(() => {
     if (!email) {
@@ -23,13 +25,9 @@ export const UserProfilePage = (): React.ReactElement => {
     }
   }, [email]);
 
-  const submitForm = (
-    values: Pick<TFormValues, 'password' | 'newPassword'>,
-  ) => {
+  const submitForm = (values: Partial<TFormValues>) => {
     /** запустить процесс смены пароля */
-    profileAuth(values);
-    // eslint-disable-next-line no-console
-    console.log('values form profile', values);
+    profileEdit(values);
   };
 
   return (
@@ -40,9 +38,10 @@ export const UserProfilePage = (): React.ReactElement => {
           submitOnSuccess={submitForm}
           signUpDate={signUpDate}
           email={email}
-          isSuccess={isSuccess}
+          isConfirmEditProfile={isConfirmEditProfile}
         />
       </div>
+      <StatusMessageModal />
     </Layout>
   );
 };

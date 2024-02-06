@@ -1,20 +1,23 @@
 import { useContextReducer } from '@context/ContextReducer';
-import { useCategoryProcessActions } from '@processes/gategory';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Layout } from '@layouts/index';
+import { useCategoryProcessActions } from '@src/processes/category';
 
 import { CreateCategoryForm } from '@common/components/form/category-form';
 import { BottomBtn } from '@common/features/control';
+import { Category } from '@common/types';
 
+import { selectors } from '@features/categories';
 import { api as apiCategory } from '@features/categories/api';
 import { Categories } from '@features/categories/components';
 import {
   CategoryState,
   TTableList,
-  TTableRows,
+  TTableColumns,
 } from '@features/categories/types';
+import { StatusMessageModal } from '@features/modal/components';
 
 export enum Themes {
   dark = 'dark',
@@ -30,47 +33,56 @@ export const CategoryPage = (): React.ReactElement => {
   const [countOperation, setCountOperation] = useState<number>(5);
   const { dispatch } = useContextReducer();
   const { addCategory } = useCategoryProcessActions();
+  const { data } = selectors.useCategorySelector();
 
   // eslint-disable-next-line id-length
   const { t } = useTranslation();
 
+  /* преобразовние полей категорий с внешнего API в столбцы таблицы */
+  const transformRes = (res: CategoryState[]) =>
+    res.map((item: CategoryState) => ({
+      id: item.id,
+      nameColumns: [
+        item.createdAt,
+        item.name,
+        item.photo,
+      ] as unknown as TTableColumns[],
+    }));
+
+  /* рендер компонента при изменении списка категорий при удалениии и редактировании */
+  useEffect(() => setOperations(transformRes(data)), [data]);
+
+  /* первоначальная загрузка списка категорий и по запросу Показать ещё */
   useEffect(() => {
     const fetch = async () => {
-      try {
-        const tokenApp = localStorage.getItem('token-app');
-        const res = await apiCategory.categoriesPostFetch(tokenApp);
+      const tokenApp = localStorage.getItem('token-app');
+      const res = await apiCategory.categoriesPostFetch(tokenApp);
 
-        const transformRes = res.map((item: CategoryState) => ({
-          id: item.id,
-          name: [
-            item.createdAt,
-            item.name,
-            item.photo,
-          ] as unknown as TTableRows[],
-        }));
-
-        setOperations(transformRes);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log('getOperations error', error);
-      }
+      setOperations(transformRes(res));
     };
     fetch();
   }, [countOperation]);
 
-  const showOperation = () => setCountOperation(() => countOperation + 5);
+  /* обработчик кнопки Показать ещё, увеличивает кол-во опреаций к показу на странице */
+  const showMore = () => setCountOperation(() => countOperation + 5);
 
-  const sendingToForm = (values: any) => {
-    // eslint-disable-next-line no-console
-    console.log('sendingToForm add-category', values);
+  /* отправляем заполненую форму на сервер и закрываем форму */
+  const sendingToForm = (values: Category) => {
     addCategory(values);
+    dispatch({
+      type: 'closeModal',
+      payload: <></>,
+      titleModal: '',
+    });
   };
 
+  /* открываем форму Добавления операции в модальном окне */
   const addCategoriesForm = () => {
     dispatch({
       type: 'openModalAdd',
       payload: <CreateCategoryForm submitOnSuccess={sendingToForm} />,
       titleModal: t('add_categories'),
+      rightBtn: 'Сохранить',
     });
   };
 
@@ -83,9 +95,11 @@ export const CategoryPage = (): React.ReactElement => {
       <Categories data={operations} />
 
       <BottomBtn
-        handleClickShow={showOperation}
+        handleClickShow={showMore}
         handleClickAdd={addCategoriesForm}
       />
+
+      <StatusMessageModal />
     </Layout>
   );
 };

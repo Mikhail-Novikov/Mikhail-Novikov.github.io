@@ -5,7 +5,7 @@ import '../form.css';
 
 import { SignupSchema } from './ValidationShema';
 import { TFormValues } from './types';
-import { ErrorMessages } from '../error-message';
+import { ErrorMessages } from '../registration-form/error-message';
 
 interface Props {
   /** Обработчик формы */
@@ -14,8 +14,8 @@ interface Props {
   signUpDate?: Date;
   /** адрес почты при последней регистрации */
   email?: string;
-  /** адрес почты при последней регистрации */
-  isSuccess?: boolean;
+  /** признак успешного редактирования профиля */
+  isConfirmEditProfile?: boolean;
 }
 
 /**
@@ -26,7 +26,7 @@ export const AuthForm = ({
   submitOnSuccess,
   signUpDate,
   email,
-  isSuccess,
+  isConfirmEditProfile,
 }: Props): React.ReactElement => (
   <Formik
     initialValues={{
@@ -102,7 +102,7 @@ export const AuthForm = ({
           <ErrorMessages field="newPassword" />
         </li>
       </ul>
-      {isSuccess && (
+      {isConfirmEditProfile && (
         <p className="margin-bottom-12 txt-bold txt-right txt-primary">
           Пароль был изменён!
         </p>

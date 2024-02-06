@@ -13,6 +13,7 @@ export const initialState = {
   amount: 0,
   date: '',
   type: undefined,
+  data: [],
 } as unknown as BudgetState;
 
 const budgetSlice = createSlice({
@@ -30,6 +31,18 @@ const budgetSlice = createSlice({
     ): BudgetState => ({
       ...state,
       ...payload,
+    }),
+    /**
+     * Запись массива данных категорий с сервера
+     * @param payload - ответ сервера
+     * @returns []
+     */
+    setOperations: (
+      state: BudgetState,
+      { payload: operations }: PayloadAction<BudgetState[]>,
+    ): BudgetState => ({
+      ...state,
+      data: operations,
     }),
   },
 });

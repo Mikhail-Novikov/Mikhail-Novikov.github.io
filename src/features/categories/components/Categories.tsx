@@ -1,16 +1,17 @@
 import { useContextReducer } from '@context/ContextReducer';
-import { useCategoryProcessActions } from '@processes/gategory';
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
+
+import { useCategoryProcessActions } from '@src/processes/category';
 
 import { EditCategoryForm } from '@common/components/form/category-form';
 import { CategoryTable } from '@common/components/table';
 
 import { selectors as selectorsCategory } from '@features/categories';
 import { useCategory } from '@features/categories/ducks';
-import { selectors as selectorsModal, useModal } from '@features/modal';
+import { selectors as selectorsModal, useModalActions } from '@features/modal';
 
-import { TTableList } from '../types';
+import { CategoryState, TTableList } from '../types';
 
 interface BudgetProps {
   data: TTableList[];
@@ -20,7 +21,7 @@ interface BudgetProps {
  * Компонент отображения категорий
  */
 export const Categories = ({ data }: BudgetProps): React.ReactElement => {
-  const { category, editCategory, sendEditFormCategory } =
+  const { editCategory, sendEditFormCategory, deleteCategory } =
     useCategoryProcessActions();
   const { setId } = useCategory();
   const { dispatch } = useContextReducer();
@@ -29,12 +30,7 @@ export const Categories = ({ data }: BudgetProps): React.ReactElement => {
 
   const [idCategoryToClick, setIdCategoryToClick] = useState<string>();
 
-  const { showModal } = useModal();
-
-  const handleClickRow = (id: string) => {
-    setId(id);
-    category();
-  };
+  const { showModal } = useModalActions();
 
   /* заполняем форму со строки таблицы на иконку */
   const handleClickEditCategory = (id: string) => {
@@ -45,18 +41,17 @@ export const Categories = ({ data }: BudgetProps): React.ReactElement => {
   };
 
   /* отправляем отредактированные поля */
-  const sendingToForm = (valueFieldsEditedForm: any) => {
+  const sendingToForm = (valueFieldsEditedForm: CategoryState) => {
     sendEditFormCategory(valueFieldsEditedForm);
     showModal({
       isOpen: false,
+      isOpenSuccess: false,
     });
     dispatch({
       type: 'closeModal',
       payload: <></>,
       titleModal: '',
     });
-    /* изменяю стейт в компоненте, рендеринга нет, реактивности нет */
-    category();
   };
 
   useEffect(() => {
@@ -74,11 +69,17 @@ export const Categories = ({ data }: BudgetProps): React.ReactElement => {
     }
   }, [isOpen]);
 
+  /* запускаем процесс удаления строки категории */
+  const handleClickDeleteCategory = (id: string) => {
+    setId(id);
+    deleteCategory(id);
+  };
+
   return (
     <CategoryTable
       data={data}
-      handleClickRow={handleClickRow}
       handleClickEditCategory={handleClickEditCategory}
+      handleClickDeleteCategory={handleClickDeleteCategory}
     />
   );
 };

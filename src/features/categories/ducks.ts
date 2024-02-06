@@ -11,6 +11,7 @@ export const initialState = {
   photo: '',
   createdAt: '',
   updatedAt: '',
+  data: [],
 } as unknown as CategoryState;
 
 const categorySlice = createSlice({
@@ -30,7 +31,7 @@ const categorySlice = createSlice({
       id: payload,
     }),
     /**
-     * Запись данных операции с сервера
+     * Запись данных категории с сервера
      * @param payload - ответ сервера
      * @returns token
      */
@@ -40,6 +41,18 @@ const categorySlice = createSlice({
     ): CategoryState => ({
       ...state,
       ...payload,
+    }),
+    /**
+     * Запись массива данных категорий с сервера
+     * @param payload - ответ сервера
+     * @returns []
+     */
+    setCategories: (
+      state: CategoryState,
+      { payload: categories }: PayloadAction<CategoryState[]>,
+    ): CategoryState => ({
+      ...state,
+      data: categories,
     }),
   },
 });

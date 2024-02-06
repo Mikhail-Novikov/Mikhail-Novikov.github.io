@@ -6,7 +6,7 @@ import { tokenProcessWatcher } from '@processes/token';
 import { SagaIterator } from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 
-import { categoryProcessWatcher } from '@src/processes/gategory';
+import { categoryProcessWatcher } from '@src/processes/category';
 
 /**
  * Главная сага - точка входа

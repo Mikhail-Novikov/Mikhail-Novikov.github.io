@@ -24,4 +24,6 @@ export type BudgetState = {
   type?: 'Profit' | 'Cost';
   updatedAt: Date;
   category?: Category;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
 };

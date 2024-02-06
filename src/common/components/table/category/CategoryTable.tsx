@@ -7,15 +7,13 @@ import TableThead from './CategoryTableThead';
 
 import '../style.css';
 
-// eslint-disable-next-line import/order
-
 interface BudgetListProps {
-  /** список доходов/расходов */
+  /** список полей для таблицы */
   data: TTableList[];
-  /** обработчик клика по ряду таблицы */
-  handleClickRow: (id: string) => void;
-  /** обработчик клика редактирования операции */
+  /** обработчик клика редактирования */
   handleClickEditCategory: (id: string) => void;
+  /** обработчик клика удаления */
+  handleClickDeleteCategory: (id: string) => void;
 }
 
 /**
@@ -23,21 +21,31 @@ interface BudgetListProps {
  */
 export const CategoryTable = ({
   data,
-  handleClickRow,
   handleClickEditCategory,
+  handleClickDeleteCategory,
 }: BudgetListProps): React.ReactElement => (
   <>
     <table className="table">
       <TableThead />
+      {!data?.length && (
+        <tbody>
+          <tr>
+            <td className="padding-left-none" colSpan={4}>
+              <h3 className="txt-micro">
+                Категории не созданы. Нажмите &laquo;Добавить&raquo;
+              </h3>
+            </td>
+          </tr>
+        </tbody>
+      )}
 
       <tbody>
         {data?.map((item: TTableList) => (
           <TableRow
             key={item.id}
-            itemRow={item.name}
-            itemIdRow={item.id}
-            handleClickRow={() => handleClickRow(item.id)}
+            itemRow={item.nameColumns}
             handleClickEditCategory={() => handleClickEditCategory(item.id)}
+            handleClickDeleteCategory={() => handleClickDeleteCategory(item.id)}
           />
         ))}
       </tbody>

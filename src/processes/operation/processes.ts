@@ -1,5 +1,4 @@
 import { push } from 'connected-react-router';
-import { createHashHistory } from 'history';
 import { SagaIterator } from 'redux-saga';
 import {
   put,
@@ -12,7 +11,7 @@ import {
 
 import { config } from '@common/config';
 
-import { api as apiBudgets } from '@features/budgets';
+import { sagas as budgetSagas } from '@features/budgets';
 import { actions as modalActions } from '@features/modal';
 import {
   selectors as operationSelectors,
@@ -24,30 +23,12 @@ import { sagas as sagasToken } from '@features/token';
 
 import { actions as operationProcessActions } from './actions';
 
-export const history = createHashHistory();
 /**
  * Процесс редактирования операции
  * @returns {void}
  */
-export function* editOperation(
-  fieldsEditOPeration: ReturnType<typeof operationProcessActions.editOperation>,
-): SagaIterator {
-  // eslint-disable-next-line no-console
-  console.log('run edit operation process');
+export function* editOperation(): SagaIterator {
   try {
-    /**
-     * --- Редактирования операции
-     * 0. открыть окно с формой с признаком - редактирование
-     * 1. заполняем форму в мод. окне через пропс formsValues
-     * 2. нажимаем Submit
-     * 3. срабатывает функция submitOnSuccess => submitEditOperation
-     * 4. запускает процесс editOperation
-     * --- передать данные об операции в форму
-     * 1. получаем токен
-     * 7. запускаем отправку на сервер данных с полей
-     * 8. получаем ответ с сервера с новой сущностью, параметры теже
-     * 9.
-     */
     /** получение id operation */
     const { id }: ReturnType<typeof operationSelectors.operationSelectors> =
       yield select(operationSelectors.operationSelectors);
@@ -59,29 +40,56 @@ export function* editOperation(
     yield put(
       modalActions.showModal({
         isOpen: true,
+        isOpenSuccess: false,
       }),
     );
-
-    /* читаем токен из хранилища браузера */
-    const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
-      yield call(sagasToken.getTokenValueFromStorage);
-
-    /** запрос на сервер с измененёнными данными формы */
-    const resEditOperation: SagaReturnType<
-      typeof apiOperation.editOperationFetch
-    > = yield call(
-      apiOperation.editOperationFetch,
-      fieldsEditOPeration.payload,
-      tokenApp,
-      id,
-    );
-    // eslint-disable-next-line no-console
-    console.log('edit-operation process resEditOperation', resEditOperation);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('error worker budget app', error);
   }
 }
+
+/**
+ * Процесс отправки отредактированной операции(см. выше)
+ * @returns {void}
+ */
+export function* sendEditFormOperation({
+  payload,
+}: ReturnType<
+  typeof operationProcessActions.sendEditFormOpertaion
+>): SagaIterator {
+  try {
+    /* получение id категории */
+    const { id }: ReturnType<typeof operationSelectors.operationSelectors> =
+      yield select(operationSelectors.operationSelectors);
+
+    /* читаем токен из хранилища браузера */
+    const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
+      yield call(sagasToken.getTokenValueFromStorage);
+
+    const status: SagaReturnType<typeof apiOperation.editOperationFetch> =
+      yield call(apiOperation.editOperationFetch, payload, tokenApp, id);
+
+    /** перезапуск - обновление списка после изменений */
+    yield call(budgetSagas.getListOfCreatedOperations);
+
+    if (status === 200) {
+      /* открытие модального окна, успех */
+      yield put(
+        modalActions.showModalMessage({
+          isOpenSuccess: true,
+          title: 'Операция',
+          message: 'Операция изменена',
+          rightBtn: null,
+        }),
+      );
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('error worker sendEditFormCategory', error);
+  }
+}
+
 /**
  * Процесс добавления операции
  * @returns {void}
@@ -89,52 +97,33 @@ export function* editOperation(
 export function* addOperation(
   fieldsAddOPeration: ReturnType<typeof operationProcessActions.addOperation>,
 ): SagaIterator {
-  // eslint-disable-next-line no-console
-  console.log('run addOperation process');
   try {
-    /**
-     * --- Добавление операции
-     * 1. заполняем форму в мод. окне
-     * 2. нажимаем Submit
-     * 3. срабатывает функция submitAddOperation
-     * 4. запускает процесс addOperation
-     * 5. пробуем передать ему данные с полей
-     * 6. получаем токен
-     * 7. запускаем отправку на сервер данных с полей
-     * 8. получаем ответ с сервера с новой сущностью, параметры теже
-     * 9. запускаем процесс показа обновленной страницы бюджета с новой сущностью
-     */
-
     /* читаем токен из хранилища браузера */
     const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
       yield call(sagasToken.getTokenValueFromStorage);
 
-    /** запускаем отправку на сервер данных с полей */
-    const resNewOperation: SagaReturnType<
-      typeof apiOperation.addOperationFetch
-    > = yield call(
-      apiOperation.addOperationFetch,
-      fieldsAddOPeration.payload,
-      tokenApp,
-    );
-    // eslint-disable-next-line no-console
-    console.log('add operation process resNewOperation', resNewOperation);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('error worker budget app', error);
-  }
-}
+    /** запускаем отправку на сервер данных из формы */
+    const status: SagaReturnType<typeof apiOperation.addOperationFetch> =
+      yield call(
+        apiOperation.addOperationFetch,
+        fieldsAddOPeration.payload,
+        tokenApp,
+      );
 
-/**
- * Процесс общего бюджета
- * @returns {void}
- */
-export function* budgetProcess(): SagaIterator {
-  // eslint-disable-next-line no-console
-  console.log('run budget process');
-  try {
-    /** запрос на сервер */
-    yield call(apiBudgets.operationsFetch);
+    if (status === 200) {
+      /* открытие модального окна, успех */
+      yield put(
+        modalActions.showModalMessage({
+          isOpenSuccess: true,
+          title: 'Операции',
+          message: 'Операция добавлена',
+          rightBtn: null,
+        }),
+      );
+    }
+    /** перезапуск - обновление списка после изменений */
+    /* запускаем saga получение данных */
+    yield call(budgetSagas.getListOfCreatedOperations);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('error worker budget app', error);
@@ -146,22 +135,7 @@ export function* budgetProcess(): SagaIterator {
  * @returns {void}
  */
 export function* operationProcess(): SagaIterator {
-  // eslint-disable-next-line no-console
-  console.log('run operation process');
   try {
-    /**
-     *  Ручной запуск подгруки данных из api
-     *  1. подгрузка данных из api operations c параметром pageSize
-     * --- Надо реализовать переход на карточку операции и просмотра её по id ---
-     * --- При клике на строку
-     *  1. Вызывать событие возвращающее id строки
-     *  2. Переход на страницу просмотра операции
-     *  3. Запуск процесса Операции
-     *  4.
-     *  3. Делаем запрос api /operations/:id на получение полей с конкретной операции по запросу
-     *  4. Селектором переносим их в поля карточки операции
-     *
-
     /** получение id operation */
     const { id }: ReturnType<typeof operationSelectors.operationSelectors> =
       yield select(operationSelectors.operationSelectors);
@@ -182,14 +156,74 @@ export function* operationProcess(): SagaIterator {
 }
 
 /**
+ * Процесс удаления категории
+ * @returns {void}
+ */
+export function* deleteOperation(): SagaIterator {
+  try {
+    /** получение id operation */
+    const { id }: ReturnType<typeof operationSelectors.operationSelectors> =
+      yield select(operationSelectors.operationSelectors);
+
+    /* читаем токен из хранилища браузера */
+    const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
+      yield call(sagasToken.getTokenValueFromStorage);
+
+    const status: SagaReturnType<typeof apiOperation.deleteOperationFetch> =
+      yield call(apiOperation.deleteOperationFetch, id, tokenApp);
+
+    yield put(modalActions.confirm(false));
+
+    /** перезапуск - обновление списка после изменений */
+    /* запускаем saga получение данных */
+    yield call(budgetSagas.getListOfCreatedOperations);
+
+    if (status !== 200) {
+      /* открытие модального окна, неудачный запрос */
+      yield put(
+        modalActions.showModalMessage({
+          isOpenSuccess: true,
+          message:
+            'Запрос на удаление операции не выполнен, повторите удаление позже',
+          title: 'Операция',
+          rightBtn: null,
+        }),
+      );
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('error worker deleteOperation', error);
+  }
+}
+
+// Спросим подтверждение на удаление категории
+export function* operationProcessDelete(): SagaIterator {
+  const isConfirm = yield call(operationSagas.confirmSaga);
+
+  if (isConfirm) {
+    yield call(deleteOperation);
+  } else {
+    yield put(
+      modalActions.showModalMessage({
+        isOpenSuccess: false,
+      }),
+    );
+  }
+}
+
+/**
  * Вотчер процесса для операциё
  * @returns {void}
  */
 export function* operationProcessWatcher(): SagaIterator {
   yield all([
     takeEvery(operationProcessActions.editOperation, editOperation),
+    takeEvery(
+      operationProcessActions.sendEditFormOpertaion,
+      sendEditFormOperation,
+    ),
     takeEvery(operationProcessActions.operation, operationProcess),
-    takeEvery(operationProcessActions.budget, budgetProcess),
     takeEvery(operationProcessActions.addOperation, addOperation),
+    takeEvery(operationProcessActions.deleteOperation, operationProcessDelete),
   ]);
 }

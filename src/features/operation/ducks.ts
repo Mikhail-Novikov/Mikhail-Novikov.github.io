@@ -13,7 +13,7 @@ export const initialState = {
   amount: 0,
   date: '',
   type: undefined,
-} as OperationState;
+} as unknown as OperationState;
 
 const operationSlice = createSlice({
   name: nameFeatures.operation,
