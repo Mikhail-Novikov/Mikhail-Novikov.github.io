@@ -32,12 +32,15 @@
     flex-direction: column;
     justify-content: space-between;
     max-width: 600px;
-    margin: 64px 12px 12px;
+    margin: 98px 12px 12px;
     min-height: 200px;
     position: relative;
     width: 100%;
 }
 
+.modal-body h5 {
+    margin-top: 12px;
+}
 .modal-header {
     padding: 24px 32px;
     border-bottom: 1px solid #000;
@@ -45,6 +48,7 @@
 
 .modal-header h2 {
     margin: 0;
+    font-weight: normal;
 }
 
 .modal-content {
@@ -52,12 +56,21 @@
     font-size: 1.6em;
     overflow-y: auto;
     padding: 24px 32px;
+    min-height: 290px;
 }
 
 .modal-content p {
     margin-top: 0;
 }
 
+.modal-content .form input[type="email"],
+.modal-content .form input[type="text"],
+.modal-content .form input[type="password"],
+.modal-content .form input[type="number"],
+.modal-content .form textarea,
+.modal-content .form select {
+    width: 514px;
+}
 .modal-footer {
     padding: 24px 32px;
     text-align: right;

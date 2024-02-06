@@ -44,6 +44,27 @@
     border-color: #005cbf;
 }
 
+.button--danger {
+    color: #fff;
+    background-color: #E91E63;
+    border-color: #E91E63;
+}
+
+.button--danger:hover {
+    color: #fff;
+    background-color: #c41953;
+    border-color: #c41953;
+}
+
+.button--danger:focus {
+    box-shadow: 0 0 0 .2em rgba(188, 12, 130, 0.5);
+}
+
+.button--danger:active {
+    color: #fff;
+    background-color: #d23469;
+    border-color: #d23469;
+}
 .button--secondary {
     color: #333;
     background-color: transparent;

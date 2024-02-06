@@ -1,7 +1,8 @@
 {
   "budget-list": "Budgets",
+  "category-list": "Categories",
   "profit-list": "Profit",
-  "cost-list": "Expenses",
+  "cost-list": "Cost",
   "table_column_name": "Name",
   "table_column_category": "Category",
   "table_column_description": "Description",
@@ -14,7 +15,9 @@
   "edit": "To change",
   "delete": "Delete",
   "add_operation": "Adding an operation",
+  "add_categories": "Adding an category",
   "edit_operation": "Editing an operation",
+  "edit_category": "Editing an category",
   "history_operation": "History of operations",
   "total_budget": "Total budget"
 }

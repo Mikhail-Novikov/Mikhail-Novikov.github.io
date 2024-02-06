@@ -1,18 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { nameFeatures } from '@common/constants';
 // eslint-disable-next-line import/no-cycle
 import { useActions } from '@common/hooks';
 
-import { RegistrationState } from './types';
+import { RegistrationState, SignUpBody } from './types';
 
 export const initialState = {
-  /** Призеак регистрации */
+  /** Признак регистрации */
   isAuthorization: false,
+  /** Значение токена */
+  token: 'not-auth',
+  email: '',
+  password: '',
 } as RegistrationState;
 
 const registrationSlice = createSlice({
-  name: nameFeatures.token,
+  name: nameFeatures.registration,
   initialState,
   reducers: {
     /**
@@ -20,9 +24,33 @@ const registrationSlice = createSlice({
      * @param state - Текущее состояние
      * @returns {TokenState} - random token
      */
-    registration: (state): RegistrationState => ({
+    registrationSuccess: (state): RegistrationState => ({
       ...state,
       isAuthorization: true,
+    }),
+    /**
+     * Запись стейта регистрации нового пользователя
+     * @param payload - ответ сервера
+     * @returns token
+     */
+    setState: (
+      state: RegistrationState,
+      { payload }: PayloadAction<RegistrationState>,
+    ): RegistrationState => ({
+      ...state,
+      token: payload.token,
+    }),
+    /**
+     * Получет данные с полей формы
+     * @param payload - данные с формы
+     * @returns email password
+     */
+    getFieldsForm: (
+      state: Omit<RegistrationState, 'email' | 'password' | 'commandId'>,
+      { payload }: PayloadAction<SignUpBody>,
+    ): RegistrationState => ({
+      ...state,
+      ...payload,
     }),
   },
 });

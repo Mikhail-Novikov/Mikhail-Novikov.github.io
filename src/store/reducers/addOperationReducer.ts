@@ -5,18 +5,34 @@ export const addOperationReducer = (
   action: Action,
 ): ReducerType => {
   switch (action.type) {
-    case 'openModalAddOpertation': {
+    case 'openModalAdd': {
       return {
         ...state,
         isOpen: true,
+        isEdit: false,
         form: action.payload,
         titleModal: action.titleModal,
+        rightBtn: action.rightBtn,
       };
     }
-    case 'closeModalAddOpertation': {
+    case 'closeModal': {
       return {
         ...state,
         isOpen: false,
+        isEdit: false,
+        form: null,
+        titleModal: '',
+        rightBtn: '',
+      };
+    }
+    case 'editModalOperation': {
+      return {
+        ...state,
+        isEdit: true,
+        isOpen: true,
+        form: action.payload,
+        titleModal: action.titleModal,
+        rightBtn: action.rightBtn,
       };
     }
     default:

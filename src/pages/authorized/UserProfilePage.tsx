@@ -1,30 +1,47 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
 
 import { Layout } from '@layouts/index';
+import { useProfileProcessActions } from '@src/processes/profile';
 
-import { useAuthorization } from '@common/hooks';
+import { Profile } from '@common/components/form/profile-form';
+import { TFormValues } from '@common/components/form/profile-form/types';
+
+import { StatusMessageModal } from '@features/modal';
+import { selectors as selecorsProfile } from '@features/profile/selectors';
 
 /**
- * Страница списка Расходов
+ * Страница авторизации и смены данных пользователя
  * @returns - Компонент
  */
 export const UserProfilePage = (): React.ReactElement => {
-  const { isAuthorization } = useAuthorization();
+  const { profile, profileEdit } = useProfileProcessActions();
+
+  const { email, signUpDate, isConfirmEditProfile } =
+    selecorsProfile.useProfileSelector();
+
+  useEffect(() => {
+    if (!email) {
+      profile();
+    }
+  }, [email]);
+
+  const submitForm = (values: Partial<TFormValues>) => {
+    /** запустить процесс смены пароля */
+    profileEdit(values);
+  };
 
   return (
     <Layout>
       <h1 className="table-title margin-top-8 margin-bottom-16">Профиль</h1>
       <div className="width-75">
-        {isAuthorization ? (
-          <>поля профиля</>
-        ) : (
-          <div>
-            <h2 className="margin-bottom-16">Вы не авторизованы</h2>
-            <Link to="/authorization">Пройти авторизацию</Link>
-          </div>
-        )}
+        <Profile
+          submitOnSuccess={submitForm}
+          signUpDate={signUpDate}
+          email={email}
+          isConfirmEditProfile={isConfirmEditProfile}
+        />
       </div>
+      <StatusMessageModal />
     </Layout>
   );
 };

@@ -1,3 +1,3 @@
 export { ActionFormModal } from './action-form';
-export { AuthorizationForm } from './authorization-form/AuthorizationForm';
-export { OperationForm } from './operation-form';
+export { RegistrationForm } from './registration-form';
+export { OperationEditForm } from './operation-form';

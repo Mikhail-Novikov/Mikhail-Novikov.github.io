@@ -1,13 +1,15 @@
 import React from 'react';
 
 import { CurrencySign } from '@common/components';
-import { useCalculationCoins } from '@common/hooks';
 
 /**
  * Компонент суммы (остатка или траты)
  */
-export const BudgetsTotalAmount = (): React.ReactElement => {
-  const { summTotal } = useCalculationCoins();
+export const BudgetsTotalAmount = ({
+  summTotal,
+}: {
+  summTotal: number;
+}): React.ReactElement => {
   let signClass = '';
 
   if (summTotal < 0) {

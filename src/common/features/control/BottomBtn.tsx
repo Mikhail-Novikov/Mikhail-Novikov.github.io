@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@common/components';
 
 interface BottomBtnProps {
-  /** Обработчик клика на кнопку показать ещё */
+  /** Обработчик клика на кнопку Показать ещё */
   handleClickShow?: () => void;
   /** Обработчик клика на кнопку Добавить операцию */
   handleClickAdd?: () => void;
@@ -19,7 +19,7 @@ export const BottomBtn = ({
   <ul className="flex-row jce mt-24">
     <li className="mr-16">
       <Button
-        label="Добавить операцию"
+        label="Добавить"
         onClick={handleClickAdd}
         type="button"
         size="large"

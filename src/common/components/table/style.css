@@ -6,6 +6,7 @@
   border-color: #dee2e6;
   caption-side: bottom;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 body,
@@ -28,15 +29,20 @@ tr {
 
 .table th {
   font-size: 1.1em;
+  height: 45px;
 }
 
-.table tr {
+.table tr:not(.disabled) {
   cursor: pointer;
 }
 
+.table .disabled {
+  pointer-events: none;
+  opacity: 0.2;
+  filter: saturate(.6);
+}
 .table-title {
   color: #6c757d;
-  font-size: 1.6em;
   line-height: 1.2;
   font-family: inherit;
   text-align: left;
@@ -79,14 +85,14 @@ main.dark table a {
   color: #6c757d;
 }
 
-.glyph-expenses,
+.glyph-Cost,
 .glyph-income {
   display: block;
   height: 24px;
   width: 4px;
 }
 
-.glyph-expenses {
+.glyph-Cost {
   background-color: #E91E63;
 }
 

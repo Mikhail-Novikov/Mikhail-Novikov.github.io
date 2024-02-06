@@ -1,12 +1,15 @@
-import { createHashHistory } from 'history';
+import { push } from 'connected-react-router';
 import { SagaIterator } from 'redux-saga';
-import { put, all, takeEvery } from 'redux-saga/effects';
+import { put, all, takeEvery, call, SagaReturnType } from 'redux-saga/effects';
 
+import { config } from '@common/config';
+
+import { sagas as categorySagas } from '@features/categories';
 import { actions as initActions } from '@features/init-app';
+import { actions as registrationActions } from '@features/registration';
+import { sagas as sagasToken } from '@features/token';
 
 import { actions as initProcessActions } from './actions';
-
-export const history = createHashHistory();
 
 /**
  * Процесс инициализации приложения
@@ -14,7 +17,24 @@ export const history = createHashHistory();
  */
 export function* initProcess(): SagaIterator {
   try {
+    /* запуск приложения */
     yield put(initActions.switchIsInitApp());
+
+    /* читаем токен из хранилища браузера */
+    const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
+      yield call(sagasToken.getTokenValueFromStorage);
+
+    /* Примитивная проверка токена */
+    if (tokenApp.length > 25) {
+      yield put(registrationActions.registrationSuccess());
+
+      /* заносим в селектор созданные категории для списка в форме создания операции */
+      yield call(categorySagas.getListOfCreatedCategories);
+
+      yield put(push(config.routes.budgetList.url));
+    } else {
+      yield put(push(config.routes.authorization.url));
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log('error worker init app', error);
