@@ -17,7 +17,7 @@ const resources = {
 // eslint-disable-next-line import/no-named-as-default-member
 i18.use(initReactI18next).use(LanguageDetector).init({
   resources,
-  lng: 'en',
+  lng: 'ru',
 });
 
 export default i18;

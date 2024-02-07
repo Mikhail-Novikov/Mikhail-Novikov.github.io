@@ -30,6 +30,11 @@ export function AppRoutes(): JSX.Element {
 
   return (
     <ContextReducer.Provider value={{ state, dispatch }}>
+      <Router>
+        <Switch>
+          <Route exact path={authorization.url} component={RegistrationPage} />
+        </Switch>
+      </Router>
       <ProtectedRoute>
         <Router>
           <Switch>
@@ -41,11 +46,6 @@ export function AppRoutes(): JSX.Element {
           </Switch>
         </Router>
       </ProtectedRoute>
-      <Router>
-        <Switch>
-          <Route exact path={authorization.url} component={RegistrationPage} />
-        </Switch>
-      </Router>
     </ContextReducer.Provider>
   );
 }

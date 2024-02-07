@@ -21,7 +21,7 @@ import {
 
 import { actions as registrationProcessAction } from './actions';
 /**
- * Процесс инициализации приложения
+ * Процесс регистрации приложения - воркер
  * @returns {void}
  */
 export function* registrationProcess(): SagaIterator {
@@ -42,22 +42,24 @@ export function* registrationProcess(): SagaIterator {
 
     /*  если нет ошибок в ответе */
     if (!responseReg.errors?.length) {
-      /* запуск записи из формы в стейт setState */
+      /** запуск записи из формы в стейт setState */
       yield put(registrationActions.setState(responseReg));
 
-      /* читаем токен из state после запроса */
+      /** читаем токен из state после запроса */
       const token: ReturnType<typeof registrationSelectors.selectorsSetState> =
         yield select(registrationSelectors.selectorsSetState);
 
-      /* запись token в locastorage */
+      /** запись token в locastorage */
       localStorage.setItem('token-app', token);
 
-      /* Разрешаем авторизацию  */
+      /** Разрешаем авторизацию  */
       yield put(registrationActions.registrationSuccess());
 
-      /* Переходим на основную страницу */
+      /** Переходим на основную страницу */
       yield put(push(config.routes.budgetList.url));
     }
+
+    /*  ошибка в ответе */
     if (responseReg.errors?.length) {
       const nameError = responseReg.errors[0].extensions.code;
 
@@ -80,7 +82,7 @@ export function* registrationProcess(): SagaIterator {
 }
 
 /**
- * Вотчер процесса инициализации приложения
+ * Вотчер процесса регистрации приложения
  * @returns {void}
  */
 export function* registrationProcessWatcher(): SagaIterator {
