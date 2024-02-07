@@ -17,7 +17,7 @@ export const ThemeSwitcher = (): React.ReactElement => {
     } else {
       setThemeState(Themes.light);
     }
-  }, [isToggleTheme, setThemeState]);
+  }, [isToggleTheme]);
 
   return (
     <div className="form-check form-switch">

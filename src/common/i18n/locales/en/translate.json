@@ -16,13 +16,19 @@
   "edit": "To change",
   "delete": "Delete",
   "label-send": "Submit",
+  "show-more": "Show more",
+  "add": "Add",
   "label-name": "Name",
   "label-email": "Email",
   "label-password": "Password",
+  "label-name-operation": "Name of the operation",
   "add_operation": "Adding an operation",
   "add_categories": "Adding an category",
   "edit_operation": "Editing an operation",
   "edit_category": "Editing an category",
   "history_operation": "History of operations",
-  "total_budget": "Total budget"
+  "total_budget": "Total budget",
+  "select-category": "Choose a category",
+  "select-operation": "select the type of operation",
+  "enter-name": "Enter a name"
 }

@@ -19,6 +19,7 @@ import {
 } from '@features/budgets/componets';
 import { BudgetState } from '@features/budgets/types';
 import { selectors as selectorsCategory } from '@features/categories';
+import { TFieldsAddOPeration } from '@features/categories/types';
 import { selectors as selectorsModal } from '@features/modal';
 import { StatusMessageModal } from '@features/modal/components';
 import { TTableList } from '@features/operation/types';
@@ -72,9 +73,9 @@ export const BudgetsPage = (): React.ReactElement => {
 
   const showOperation = () => setCountOperation(() => countOperation + 5);
 
-  const submitAddOperation = (values: any) => {
+  const submitAddOperation = (values: TFieldsAddOPeration) => {
     addOperation(values);
-    fetch();
+
     dispatch({
       type: 'closeModal',
       payload: <></>,
@@ -92,7 +93,7 @@ export const BudgetsPage = (): React.ReactElement => {
         />
       ),
       titleModal: t('add_operation'),
-      rightBtn: dataCategories.length ? 'Сохранить' : null,
+      rightBtn: dataCategories.length ? t('save') : null,
     });
   };
 

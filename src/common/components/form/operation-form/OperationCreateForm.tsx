@@ -92,27 +92,27 @@ export const OperationCreateForm = ({
 
         {errors.type?.type === 'required' && (
           <div className="margin-4 txt-danger txt-micro" role="alert">
-            Выберите тип операции
+            {t('select-operation')}
           </div>
         )}
       </div>
 
       <div className="mb-32">
-        <label>*Название операции</label>
+        <label>*{t('label-name-operation')}</label>
         <input
-          placeholder="Введите название"
+          placeholder={t('enter-name')}
           type="text"
           {...register('name', { required: true, minLength: 3 })}
         />
         {errors.name?.type === 'required' && (
           <div className="txt-danger txt-micro" role="alert">
-            Введите название
+            {t('enter-name')}
           </div>
         )}
       </div>
 
       <div className="mb-32">
-        <label>*Категория</label>
+        <label>*{t('table_column_category')}</label>
         <select
           {...register('categoryId', { required: true })}
           placeholder="Выберите категорию"
@@ -131,12 +131,12 @@ export const OperationCreateForm = ({
       </div>
 
       <div className="mb-32">
-        <label>Сумма</label>
+        <label>{t('table_column_amount')}</label>
         <input type="number" {...register('amount', { required: false })} />
       </div>
 
       <div className="mb-32">
-        <label>Описание</label>
+        <label>{t('table_column_description')}</label>
         <input type="text" {...register('desc', { required: false })} />
       </div>
     </form>

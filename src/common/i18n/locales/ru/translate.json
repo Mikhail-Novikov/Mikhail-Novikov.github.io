@@ -16,13 +16,19 @@
   "edit": "Изменить",
   "delete": "Удалить",
   "label-send": "Отправить",
+  "show-more": "Показать ещё",
+  "add": "Добавить",
   "label-name": "Имя",
   "label-email": "Почта",
   "label-password": "Пароль",
+  "label-name-operation": "Название операции",
   "add_operation": "Добавление операции",
   "add_categories": "Добавление категории",
   "edit_operation": "Редактирование операции",
   "edit_category": "Редактирование категории",
   "history_operation": "История операций",
-  "total_budget": "Общий бюджет"
+  "total_budget": "Общий бюджет",
+  "select-category": "Выберите категогорию",
+  "select-operation": "Выберите тип операции",
+  "enter-name": "Введите название"
 }

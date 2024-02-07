@@ -52,7 +52,7 @@ export function* registrationProcess(): SagaIterator {
       /** запись token в locastorage */
       localStorage.setItem('token-app', token);
 
-      /** Разрешаем авторизацию  */
+      /** Разрешаем авторизацию isAuthorization: true */
       yield put(registrationActions.registrationSuccess());
 
       /** Переходим на основную страницу */

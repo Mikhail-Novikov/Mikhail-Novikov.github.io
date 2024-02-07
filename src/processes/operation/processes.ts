@@ -98,7 +98,7 @@ export function* addOperation(
   fieldsAddOPeration: ReturnType<typeof operationProcessActions.addOperation>,
 ): SagaIterator {
   try {
-    /* читаем токен из хранилища браузера */
+    /** читаем токен из хранилища браузера */
     const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
       yield call(sagasToken.getTokenValueFromStorage);
 
@@ -111,7 +111,7 @@ export function* addOperation(
       );
 
     if (status === 200) {
-      /* открытие модального окна, успех */
+      /** открытие модального окна, успех */
       yield put(
         modalActions.showModalMessage({
           isOpenSuccess: true,
