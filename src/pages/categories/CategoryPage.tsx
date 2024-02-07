@@ -38,12 +38,23 @@ export const CategoryPage = (): React.ReactElement => {
   // eslint-disable-next-line id-length
   const { t } = useTranslation();
 
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  } as const;
+  const formatDates = (el: string) => el.replace(/^"(.+(?="$))"$/, '$1');
+  const formatCreateAd = (item: string) => {
+    const createDate = new Date(item);
+    return JSON.stringify(createDate.toLocaleString('ru-RU', options));
+  };
+
   /* преобразовние полей категорий с внешнего API в столбцы таблицы */
   const transformRes = (res: CategoryState[]) =>
     res.map((item: CategoryState) => ({
       id: item.id,
       nameColumns: [
-        item.createdAt,
+        formatDates(formatCreateAd(item.createdAt)),
         item.name,
         item.photo,
       ] as unknown as TTableColumns[],

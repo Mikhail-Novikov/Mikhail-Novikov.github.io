@@ -35,7 +35,7 @@ export enum Themes {
  */
 export const BudgetsPage = (): React.ReactElement => {
   const [operations, setOperations] = useState<TTableList[]>(null);
-  const [operationsAll, setAllOperations] = useState<any>(null);
+  const [operationsAll, setAllOperations] = useState<TTableList[]>(null);
   const [countOperation, setCountOperation] = useState<number>(5);
   const { dispatch } = useContextReducer();
   const { addOperation } = useOperationProcessActions();
@@ -45,8 +45,6 @@ export const BudgetsPage = (): React.ReactElement => {
   const { summTotal, summCost, summProfit } =
     useCalculationCoins(operationsAll);
 
-  const tokenApp = localStorage.getItem('token-app');
-
   // eslint-disable-next-line id-length
   const { t } = useTranslation();
 
@@ -55,7 +53,9 @@ export const BudgetsPage = (): React.ReactElement => {
 
   const fetch = async () => {
     try {
+      const tokenApp = localStorage.getItem('token-app');
       const res = await apiBudgets.getOperations(tokenApp, countOperation);
+
       setAllOperations(transformRes(await apiBudgets.getOperations(tokenApp)));
 
       setOperations(transformRes(res));

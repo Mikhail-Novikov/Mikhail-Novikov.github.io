@@ -59,11 +59,11 @@ export function* sendEditFormOperation({
   typeof operationProcessActions.sendEditFormOpertaion
 >): SagaIterator {
   try {
-    /* получение id категории */
+    /** получение id операции */
     const { id }: ReturnType<typeof operationSelectors.operationSelectors> =
       yield select(operationSelectors.operationSelectors);
 
-    /* читаем токен из хранилища браузера */
+    /** читаем токен из хранилища браузера */
     const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
       yield call(sagasToken.getTokenValueFromStorage);
 
@@ -74,7 +74,7 @@ export function* sendEditFormOperation({
     yield call(budgetSagas.getListOfCreatedOperations);
 
     if (status === 200) {
-      /* открытие модального окна, успех */
+      /** открытие модального окна, успех */
       yield put(
         modalActions.showModalMessage({
           isOpenSuccess: true,
@@ -165,13 +165,15 @@ export function* deleteOperation(): SagaIterator {
     const { id }: ReturnType<typeof operationSelectors.operationSelectors> =
       yield select(operationSelectors.operationSelectors);
 
-    /* читаем токен из хранилища браузера */
+    /** читаем токен из хранилища браузера */
     const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
       yield call(sagasToken.getTokenValueFromStorage);
 
+    /** запрос на удаление */
     const status: SagaReturnType<typeof apiOperation.deleteOperationFetch> =
       yield call(apiOperation.deleteOperationFetch, id, tokenApp);
 
+    /** убираем окно подтверждения */
     yield put(modalActions.confirm(false));
 
     /** перезапуск - обновление списка после изменений */

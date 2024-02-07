@@ -55,7 +55,7 @@ export const Budgets = ({ data }: BudgetProps): React.ReactElement => {
   /* откроет окно для редактирования */
   const handleClickEditOperation = (item: Operation) => {
     setId(item.id);
-    editOperation(item);
+    editOperation();
   };
 
   useEffect(() => {
