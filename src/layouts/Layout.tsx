@@ -25,7 +25,7 @@ export enum Themes {
 export const Layout = ({ children }: LayoutProps): React.ReactElement => {
   const [themesName, setThemeState] = React.useState<Themes>();
   const { state, dispatch } = useContextReducer();
-  const { isAuthorization } = useAuthorization();
+  const isAuthorization = useAuthorization();
   const { showModal } = useModalActions();
   const { rightBtn } = selectors.useModalSelector();
 

@@ -8,10 +8,9 @@ import { InitAppState } from './types';
 const initAppSelector = (state: RootState) => state[nameFeatures.initApp];
 
 /**
- * Признак инитиализации
+ * Хук подписки на изменение признака инициализации приложения
  * @returns {boolean} признак
  */
-
 const useInitialAppSelector = (): InitAppState => useSelector(initAppSelector);
 
 export const selectors = {

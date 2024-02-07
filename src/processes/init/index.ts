@@ -1,2 +1,2 @@
-export { actions } from './actions';
+export { actions, useInitAppProcessActions } from './actions';
 export { initProcessWatcher } from './processes';

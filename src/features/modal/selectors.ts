@@ -8,11 +8,6 @@ import { ModalState } from './types';
 
 const featureState = (state: RootState) => state[nameFeatures.modal];
 
-/**
- * Признак инитиализации
- * @returns {boolean} признак
- */
-
 const modalSelectors = createSelector(featureState, (state) => state);
 
 const useModalSelector = (): ModalState => useSelector(featureState);

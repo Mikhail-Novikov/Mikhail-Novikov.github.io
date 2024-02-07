@@ -8,7 +8,7 @@ export type ProtectedRouteProps = {
 };
 
 export const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }) => {
-  const { isAuthorization } = useAuthorization();
+  const isAuthorization = useAuthorization();
   const history = createHashHistory();
 
   if (isAuthorization) {

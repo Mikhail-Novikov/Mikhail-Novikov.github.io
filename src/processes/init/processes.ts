@@ -12,23 +12,26 @@ import { sagas as sagasToken } from '@features/token';
 import { actions as initProcessActions } from './actions';
 
 /**
- * Процесс инициализации приложения
+ * Процесс инициализации приложения - воркер
  * @returns {void}
  */
 export function* initProcess(): SagaIterator {
+  // eslint-disable-next-line no-console
+  console.log('Инициализация приложения');
   try {
-    /* запуск приложения */
+    /** запуск приложения */
     yield put(initActions.switchIsInitApp());
 
-    /* читаем токен из хранилища браузера */
+    /** читаем токен из хранилища браузера */
     const tokenApp: SagaReturnType<typeof sagasToken.getTokenValueFromStorage> =
       yield call(sagasToken.getTokenValueFromStorage);
 
-    /* Примитивная проверка токена */
+    /** Примитивная проверка токена */
     if (tokenApp.length > 25) {
+      /** создаем стейт с признаком isAuthorization: true, через хук проверки токена формируем переменную для всх компонентов */
       yield put(registrationActions.registrationSuccess());
 
-      /* заносим в селектор созданные категории для списка в форме создания операции */
+      /** заносим в селектор созданные категории для списка в форме создания операции */
       yield call(categorySagas.getListOfCreatedCategories);
 
       yield put(push(config.routes.budgetList.url));
