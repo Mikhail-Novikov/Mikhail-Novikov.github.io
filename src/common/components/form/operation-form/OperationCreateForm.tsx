@@ -54,14 +54,10 @@ export const OperationCreateForm = ({
     );
   }
 
+  const onSubmit = (data: typeof initValues) => submitOnSuccess(data);
+
   return (
-    <form
-      onSubmit={handleSubmit((data) => {
-        submitOnSuccess(data);
-      })}
-      id="operation"
-      className="form"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} id="operation" className="form">
       <div className="mb-12" role="group" aria-labelledby="my-radio-group">
         <div className="flex-row align-items-center gap-16 ">
           <div className="flex-row align-items-center">

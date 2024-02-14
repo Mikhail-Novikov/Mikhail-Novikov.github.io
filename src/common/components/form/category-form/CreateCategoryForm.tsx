@@ -35,14 +35,10 @@ export const CreateCategoryForm = ({
     defaultValues: incomingFormValues,
   });
 
+  const onSubmit = (data: typeof incomingFormValues) => submitOnSuccess(data);
+
   return (
-    <form
-      onSubmit={handleSubmit((data) => {
-        submitOnSuccess(data);
-      })}
-      id="operation"
-      className="form"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} id="operation" className="form">
       <div className="mb-32">
         <label>*Название категории</label>
         <input

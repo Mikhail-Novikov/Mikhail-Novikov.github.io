@@ -1,5 +1,5 @@
 import '../form.css';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { CategoryState } from '@features/categories/types';
@@ -31,26 +31,15 @@ export const EditCategoryForm = ({
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm({
     defaultValues: incomingFormValues,
   });
 
-  useEffect(() => {
-    setValue('name', formValues.name);
-    setValue('photo', formValues.photo);
-    setValue('createdAt', dateInputValue);
-  }, [formValues]);
+  const onSubmit = (data: typeof incomingFormValues) => submitOnSuccess(data);
 
   return (
-    <form
-      onSubmit={handleSubmit((data) => {
-        submitOnSuccess(data);
-      })}
-      id="operation"
-      className="form"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} id="operation" className="form">
       <div className="mb-32">
         <label>*Название категории</label>
         <input
